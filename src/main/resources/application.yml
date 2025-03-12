@@ -35,6 +35,14 @@ mybatis-plus:
     map-underscore-to-camel-case: true
   type-handlers-package: com.cqut.childcare.common.handler # 注册自定义handler
 
+rocketmq:
+  name-server: ${rocketmq.name-server}
+
+  producer:
+    group: childcareGroup
+    access-key: ${rocketmq.access-key}
+    secret-key: ${rocketmq.secret-key}
+
 
 
 

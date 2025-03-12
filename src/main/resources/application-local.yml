@@ -5,3 +5,8 @@ mysql:
   db: childcare
   username: root
   password: 123456
+
+rocketmq:
+  name-server: 192.168.9.100:9876
+  access-key:
+  secret-key:
