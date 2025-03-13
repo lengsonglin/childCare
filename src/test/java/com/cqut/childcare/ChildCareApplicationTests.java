@@ -12,11 +12,9 @@ class ChildCareApplicationTests {
     private MQProducer mqProducer;
 
     @Test
-    void contextLoads() {
-    }
-    @Test
-    void testSyncMessage(){
-        mqProducer.sendSyncMessage("TEST_TOPIC","菀菀");
+    void testSyncMessage() throws InterruptedException {
+        mqProducer.sendSyncMessage("TEST_TOPIC","菀菀1111");
+        Thread.sleep(5000);
     }
 
 }
