@@ -118,5 +118,14 @@ public class JobServiceImpl implements JobService  {
         return PageBaseResp.init(jobsPage,jobsPage.getRecords());
     }
 
+    @Override
+    public void executeJob(String jobName) {
+        try {
+            scheduler.triggerJob(JobKey.jobKey(jobName,JOB_GROUP_NAME));
+        } catch (SchedulerException e) {
+            throw new QrtzJobException("执行任务失败");
+        }
+    }
+
 }
 

@@ -27,4 +27,6 @@ public interface JobService {
     void resumeJob(String jobName);
 
     PageBaseResp<QrtzJob> getJobs(PageBaseReq request);
+
+    void executeJob(String jobName);
 }

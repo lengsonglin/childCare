@@ -88,5 +88,21 @@ public class JobController {
     public ResponseEntity<PageBaseResp<QrtzJob>> getJobs(@Valid PageBaseReq request){
         return ResponseEntity.ok(jobService.getJobs(request));
     }
+
+    @PatchMapping("/{id}/execute")
+    @ApiOperation("立即执行一次当前任务")
+    public ResponseEntity<?> executeJob(@PathVariable Long id){
+        QrtzJob qrtzJob = jobService.getById(id);
+        if (Objects.isNull(qrtzJob)) {
+            return ResponseEntity.badRequest().body("任务不存在！");
+        }
+        try {
+            jobService.executeJob(qrtzJob.getJobName());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok("任务执行成功");
+    }
+
 }
 

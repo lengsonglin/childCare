@@ -17,6 +17,12 @@ spring:
             instanceName: clusteredScheduler
             instanceId: AUTO   # 集群下自动生成 ID
 
+  redis:
+    port: ${redis.port}
+    host: ${redis.host}
+    database: 0
+    password: ${redis.password}
+
   datasource:
     url: jdbc:mysql://${mysql.ip}:${mysql.port}/${mysql.db}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: ${mysql.username}
@@ -37,11 +43,12 @@ mybatis-plus:
 
 rocketmq:
   name-server: ${rocketmq.name-server}
-
   producer:
     group: childcareGroup
     access-key: ${rocketmq.access-key}
     secret-key: ${rocketmq.secret-key}
+
+
 
 
 
