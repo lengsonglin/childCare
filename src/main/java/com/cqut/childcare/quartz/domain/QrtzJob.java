@@ -33,7 +33,7 @@ public class QrtzJob implements Serializable {
     private String className;
     private String cronExp;
     /**
-     *   状态，running/paused
+     *   状态，RUNNING/PAUSED
      */
     private String status;
 

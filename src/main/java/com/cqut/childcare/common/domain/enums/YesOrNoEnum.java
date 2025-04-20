@@ -1,4 +1,4 @@
-package com.cqut.childcare.common.domain.nums;
+package com.cqut.childcare.common.domain.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

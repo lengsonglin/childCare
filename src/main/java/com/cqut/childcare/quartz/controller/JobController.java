@@ -79,6 +79,9 @@ public class JobController {
         if (Objects.isNull(qrtzJob)) {
             return ResponseEntity.badRequest().body("任务不存在！");
         }
+        if (qrtzJob.getStatus() == "RUNNING") {
+            ResponseEntity.badRequest().body("当前任务状态是启用的，无法直接删除!");
+        }
         jobService.deleteJob(qrtzJob.getJobName());
         return ResponseEntity.ok("任务已删除");
     }
@@ -103,6 +106,8 @@ public class JobController {
         }
         return ResponseEntity.ok("任务执行成功");
     }
+
+
 
 }
 

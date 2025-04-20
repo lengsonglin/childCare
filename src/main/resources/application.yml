@@ -47,6 +47,15 @@ rocketmq:
     group: childcareGroup
     access-key: ${rocketmq.access-key}
     secret-key: ${rocketmq.secret-key}
+knife4j:
+  enable: true
+
+childcare:
+  jwt:
+    secret: 123456
+
+
+
 
 
 

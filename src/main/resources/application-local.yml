@@ -7,9 +7,9 @@ mysql:
   password: 123456
 
 redis:
-  host: 127.0.0.1
+  host: 47.109.155.184
   port: 6379
-  password:
+  password: 123456
 
 rocketmq:
   name-server: 47.109.155.184:9876
@@ -17,7 +17,7 @@ rocketmq:
   secret-key:
 
 minio:
-  endpoint: http://1.12.45.89:9000
+  endpoint: http://47.109.155.184:9000
   access-key: minioadmin
   secret-key: minioadmin
   bucket: default

@@ -1,16 +1,23 @@
 package com.cqut.childcare.common.config;
 
 
+import com.cqut.childcare.common.intecepter.TokenInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description:
@@ -39,7 +46,21 @@ public class SwaggerConfig {
                         .withClassAnnotation(RestController.class)
                 )
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .globalOperationParameters(getGlobalRequestParameters());
+
     }
 
+    //生成全局通用参数
+    private List<Parameter> getGlobalRequestParameters() {
+        List<Parameter> parameters = new ArrayList<>();
+        parameters.add(new ParameterBuilder()
+                .name(TokenInterceptor.AUTHORIZATION_HEADER)
+                .description("认证")
+                .parameterType("header")
+                .modelRef(new ModelRef("string"))
+                .required(false)
+                .build());
+        return parameters;
+    }
 }
