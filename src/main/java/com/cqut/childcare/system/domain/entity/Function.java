@@ -8,7 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @Description
+ * @Description 功能实体类
  * @Author Faiz
  * @ClassName Function
  * @Version 1.0
@@ -19,13 +19,14 @@ public class Function implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     private String name;
 
     private Byte onState;
 
-    private String remark;
+    private String description;
 
+    private String remark;
 }

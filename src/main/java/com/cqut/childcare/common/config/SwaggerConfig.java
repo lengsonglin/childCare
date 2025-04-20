@@ -4,12 +4,15 @@ package com.cqut.childcare.common.config;
 import com.cqut.childcare.common.intecepter.TokenInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
@@ -28,18 +31,13 @@ import java.util.List;
 @EnableSwagger2WebMvc
 public class SwaggerConfig {
     @Bean(value = "defaultApi")
-    Docket docket() {
+    public Docket docket(Environment environment) {
+        Profiles profiles = Profiles.of("dev","local");
+        boolean flag = environment.acceptsProfiles(profiles);
         return new Docket(DocumentationType.SWAGGER_2)
                 //配置网站的基本信息
-                .apiInfo(new ApiInfoBuilder()
-                        //网站标题
-                        .title("childCare接口文档")
-                        //标题后面的版本号
-                        .version("v1.0")
-                        .description("childCare接口文档")
-                        //联系人信息
-                        .contact(new Contact("faiz", "", ""))
-                        .build())
+                .enable(flag)
+                .apiInfo(apiInfo())
                 .select()
                 //指定接口的位置
                 .apis(RequestHandlerSelectors
@@ -49,6 +47,24 @@ public class SwaggerConfig {
                 .build()
                 .globalOperationParameters(getGlobalRequestParameters());
 
+    }
+    @Bean
+    public Docket systemGroup(Environment environment){
+        Profiles profiles = Profiles.of("dev","local");
+        boolean flag = environment.acceptsProfiles(profiles);
+        return new Docket(DocumentationType.SWAGGER_2)
+                //配置网站的基本信息
+                .groupName("system")
+                .enable(flag)
+                .apiInfo(apiInfo())
+                .select()
+                //指定接口的位置
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.cqut.childcare.system")
+                )
+                .paths(PathSelectors.any())
+                .build()
+                .globalOperationParameters(getGlobalRequestParameters());
     }
 
     //生成全局通用参数
@@ -62,5 +78,17 @@ public class SwaggerConfig {
                 .required(false)
                 .build());
         return parameters;
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                //网站标题
+                .title("childCare接口文档")
+                //标题后面的版本号
+                .version("v1.0")
+                .description("childCare接口文档")
+                //联系人信息
+                .contact(new Contact("faiz", "", ""))
+                .build();
     }
 }

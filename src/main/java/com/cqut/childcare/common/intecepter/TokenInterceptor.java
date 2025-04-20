@@ -41,7 +41,8 @@ public class TokenInterceptor implements HandlerInterceptor {
             RequestHolder.set(info);
         }else{
             boolean isPublicURI = isPublicURI(request.getRequestURI());
-            if (!isPublicURI) {//又没有登录态，又不是公开路径，直接401
+            boolean isSystemURI = isSystemURI(request.getRequestURI());
+            if (!isPublicURI && !isSystemURI) {//又没有登录态，又不是公开路径，直接401
                 response.getWriter().write(JSONUtil.toJsonStr(ApiResult.fail(CommonErrorEnum.INVALID_TOKEN)));
                 return false;
             }
@@ -61,4 +62,11 @@ public class TokenInterceptor implements HandlerInterceptor {
         String[] split = requestURI.split("/");
         return split.length > 2 && "public".equals(split[3]);
     }
+
+    private boolean isSystemURI(String requestURI){
+        String[] split = requestURI.split("/");
+        return split.length > 2 && "system".equals(split[2]);
+    }
+
+
 }

@@ -6,9 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
- * @Description
+ * @Description 发育检查实体类
  * @Author Faiz
  * @ClassName DevelopmentCheck
  * @Version 1.0
@@ -16,16 +17,12 @@ import java.io.Serializable;
 @Data
 @TableName("t_development_check")
 public class DevelopmentCheck implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long id;
-
     private String time;
-
     private String description;
-
-    private Long createBy;
-
     private String remark;
 
 }

@@ -85,7 +85,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         }else if(Objects.equals(type, LoginAboutTypeEnum.MODIFY_PASSWORD.getType())){
             boolean flag = customerDao.modifyPasswordByTelphone(password,telPhone);
             if (!flag) {
-                throw new AppRuntimeException(CommonErrorEnum.TELPHONE_IS_INVALID);
+                throw new AppRuntimeException(CommonErrorEnum.TELPHONE_UNREGISTERED);
             }
         }
 

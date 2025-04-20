@@ -21,7 +21,7 @@ public class Vaccine implements Serializable {
 
     private String type;
 
-    private String vaccination_Time;
+    private String vaccinationTime;
 
     private String name;
 

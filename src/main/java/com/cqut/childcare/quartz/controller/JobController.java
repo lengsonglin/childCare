@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(tags = "定时任务相关接口")
-@RequestMapping("/api/jobs")
+@RequestMapping("/system/jobs")
 @Validated
 public class JobController {
     @Autowired
@@ -38,13 +38,13 @@ public class JobController {
         BeanUtils.copyProperties(qrtzJobDto,qrtzJob);
         try {
             jobService.addJob(qrtzJob);
-            return ResponseEntity.ok("任务创建成功");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PatchMapping("/{id}/pause")
+    @PatchMapping("/pause/{id}")
     @ApiOperation("暂停指定定时任务")
     public ResponseEntity<?> pauseJob(@PathVariable Long id) {
         QrtzJob qrtzJob = jobService.getById(id);
@@ -52,13 +52,13 @@ public class JobController {
             return ResponseEntity.badRequest().body("任务不存在！");
         }
         if (qrtzJob.getStatus().equals("PAUSED")){
-            return ResponseEntity.ok("任务已暂停,请勿重复操作");
+            return ResponseEntity.ok().build();
         }
         jobService.pauseJob(qrtzJob.getJobName());
-        return ResponseEntity.ok("任务已暂停");
+        return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{id}/run")
+    @PatchMapping("/run/{id}")
     @ApiOperation("启动指定定时任务")
     public ResponseEntity<?> resumeJob(@PathVariable Long id) {
         QrtzJob qrtzJob = jobService.getById(id);
@@ -66,10 +66,10 @@ public class JobController {
             return ResponseEntity.badRequest().body("任务不存在！");
         }
         if (qrtzJob.getStatus().equals("RUNNING")){
-            return ResponseEntity.ok("任务已启动,请勿重复操作");
+            return ResponseEntity.ok().build();
         }
         jobService.resumeJob(qrtzJob.getJobName());
-        return ResponseEntity.ok("任务已启动");
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -83,7 +83,7 @@ public class JobController {
             ResponseEntity.badRequest().body("当前任务状态是启用的，无法直接删除!");
         }
         jobService.deleteJob(qrtzJob.getJobName());
-        return ResponseEntity.ok("任务已删除");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/getJobs")
@@ -104,7 +104,7 @@ public class JobController {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok("任务执行成功");
+        return ResponseEntity.ok().build();
     }
 
 
