@@ -2,15 +2,14 @@ package com.cqut.childcare.children.controller;
 
 import com.cqut.childcare.children.domain.dto.BabyAddDto;
 import com.cqut.childcare.children.domain.entity.Baby;
+import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.domain.vo.ApiResult;
-import com.cqut.childcare.minIo.service.OssService;
+import com.cqut.childcare.common.utils.RequestHolder;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-
 
 /**
  * @Description
@@ -24,11 +23,12 @@ import javax.validation.Valid;
 public class BabyController {
 
     @Autowired
-    private OssService ossService;
+    private BabyService babyService;
 
     @PostMapping(value = "/addBaby",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResult<Baby> createBaby(@Valid @ModelAttribute BabyAddDto babyCreateDto){
-
-        return null;
+        Long cid = RequestHolder.get().getCid();
+        babyService.createBaby(babyCreateDto,cid);
+        return ApiResult.success();
     }
 }

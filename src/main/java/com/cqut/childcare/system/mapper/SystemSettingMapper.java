@@ -1,7 +1,7 @@
 package com.cqut.childcare.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cqut.childcare.system.domain.entity.systemSetting;
+import com.cqut.childcare.system.domain.entity.SystemSetting;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @Version 1.0
  */
 @Mapper
-public interface SystemSettingMapper extends BaseMapper<systemSetting> {
+public interface SystemSettingMapper extends BaseMapper<SystemSetting> {
 } 

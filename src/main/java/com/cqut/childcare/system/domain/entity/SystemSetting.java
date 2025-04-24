@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("t_system_setting")
-public class systemSetting implements Serializable {
+public class SystemSetting implements Serializable {
 
     private Long id;  // 系统ID（唯一记录，初始化时需设置id=1）
 
@@ -38,7 +38,7 @@ public class systemSetting implements Serializable {
     private Integer shortMsgTime;  // 短信验证码有效期（单位：分）
 
     // 构造函数（带初始化id=1）
-    public systemSetting() {
+    public SystemSetting() {
         this.id = 1L;  // 根据注释初始化系统ID
     }
 }

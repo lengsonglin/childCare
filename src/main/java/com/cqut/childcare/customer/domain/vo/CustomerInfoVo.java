@@ -42,6 +42,6 @@ public class CustomerInfoVo {
     private String email;
     @ApiModelProperty("用户居住地址")
     private String address;
-    @ApiModelProperty("用户类型  宝宝的家人或者是托育工作人员(family/caregiver)")
+    @ApiModelProperty("用户类型  宝宝的家人或者是托育工作人员(family/childcareWorker)")
     private String type;
 }

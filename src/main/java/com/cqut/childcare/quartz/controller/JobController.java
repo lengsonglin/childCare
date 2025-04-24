@@ -106,8 +106,5 @@ public class JobController {
         }
         return ResponseEntity.ok().build();
     }
-
-
-
 }
 

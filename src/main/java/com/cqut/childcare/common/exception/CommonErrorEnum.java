@@ -19,7 +19,10 @@ public enum CommonErrorEnum implements ErrorEnum {
     CUSTOMER_PHONE_IS_REGISTER(1003,"手机号已注册"),
     GET_AVATAR_URL_FAILED(1005,"手机号未注册"),
 
-    PARAM_VALID(2000, "参数校验失败{0}");
+    PARAM_VALID(2000, "参数校验失败{0}"),
+    BUSINESS_ERROR(2001, "{0}");
+
+
 
     private final Integer code;
     private final String msg;

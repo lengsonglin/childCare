@@ -1,5 +1,6 @@
 package com.cqut.childcare;
 
+import com.cqut.childcare.common.service.SystemSettingLoader;
 import com.cqut.childcare.common.transaction.service.MQProducer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.util.DigestUtils;
 
 @SpringBootTest
 class ChildCareApplicationTests {
-
 
     @Autowired
     private MQProducer mqProducer;
@@ -22,6 +22,11 @@ class ChildCareApplicationTests {
     void testGetEncryptPassword(){
         String password = "admin";
         System.out.println(DigestUtils.md5DigestAsHex(password.getBytes()));
+    }
+    @Test
+    void testGetSystemSetting() throws InterruptedException {
+        System.out.println(SystemSettingLoader.getSystemSetting().getShortMsgCount());
+        Thread.sleep(5000);
     }
 
 

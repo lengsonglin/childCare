@@ -2,7 +2,7 @@ package com.cqut.childcare.system.controller;
 
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.CommonErrorEnum;
-import com.cqut.childcare.system.domain.entity.systemSetting;
+import com.cqut.childcare.system.domain.entity.SystemSetting;
 import com.cqut.childcare.system.service.SystemSettingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,14 +26,14 @@ public class SystemSettingController {
 
     @ApiOperation(value = "更新系统设置")
     @PostMapping("/update")
-    public ApiResult<Void> updateSystemSetting(@Valid @RequestBody systemSetting setting) {
+    public ApiResult<Void> updateSystemSetting(@Valid @RequestBody SystemSetting setting) {
         boolean success = systemSettingService.updateSystemSetting(setting);
         return success ? ApiResult.success() : ApiResult.fail(CommonErrorEnum.SYSTEM_ERROR);
     }
     @ApiOperation(value = "获取系统设置")
     @GetMapping("/get")
-    public ApiResult<systemSetting> getSystemSetting() {
-        systemSetting setting = systemSettingService.getById(1L);
+    public ApiResult<SystemSetting> getSystemSetting() {
+        SystemSetting setting = systemSettingService.getById(1L);
         return ApiResult.success(setting);
     }
 } 

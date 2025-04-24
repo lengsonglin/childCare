@@ -16,7 +16,8 @@ spring:
           scheduler:
             instanceName: clusteredScheduler
             instanceId: AUTO   # 集群下自动生成 ID
-
+server:
+  port: 8765
   redis:
     port: ${redis.port}
     host: ${redis.host}

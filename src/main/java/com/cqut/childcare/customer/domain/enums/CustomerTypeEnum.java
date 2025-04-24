@@ -15,6 +15,6 @@ public enum CustomerTypeEnum {
 
     FAMILY("family"),
 
-    CAREGIVER("caregiver");
+    CHILDCARE_WORKER("childcareWorker");
     private final String type;
 }
