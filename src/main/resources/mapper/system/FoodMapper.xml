@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqut.childcare.system.mapper.FoodMapper">
+    <resultMap id="BaseResultMap" type="com.cqut.childcare.system.domain.entity.Food">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="allergen_tags" property="allergenTags"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+</mapper> 

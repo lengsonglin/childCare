@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqut.childcare.system.mapper.DietPlanMapper">
+    <resultMap id="BaseResultMap" type="com.cqut.childcare.system.domain.entity.DietPlan">
+        <id column="id" property="id"/>
+        <result column="time_day" property="timeDay"/>
+        <result column="time_name" property="timeName"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <select id="getByDate" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_diet_plan
+        WHERE time_day = #{date}
+        ORDER BY time_name ASC
+    </select>
+
+    <select id="getByWeek" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_diet_plan
+        WHERE time_day BETWEEN #{startDate} AND #{startDate} + INTERVAL 6 DAY
+        ORDER BY time_day ASC, time_name ASC
+    </select>
+
+    <delete id="removeByDateAndMealTime">
+        DELETE FROM t_diet_plan
+        WHERE time_day = #{date} AND time_name = #{mealTime}
+    </delete>
+
+    <delete id="removeFoodsByDateAndMealTime">
+        DELETE FROM t_diet_plan
+        WHERE time_day = #{date} 
+        AND time_name = #{mealTime}
+        AND id IN (
+            SELECT diet_plan_id 
+            FROM t_diet_plan_food 
+            WHERE food_id IN 
+            <foreach collection="foodIds" item="foodId" open="(" separator="," close=")">
+                #{foodId}
+            </foreach>
+        )
+    </delete>
+</mapper> 

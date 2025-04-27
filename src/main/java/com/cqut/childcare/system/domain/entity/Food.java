@@ -3,6 +3,7 @@ package com.cqut.childcare.system.domain.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,11 +27,15 @@ public class Food implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+    @ApiModelProperty("食物名称")
     private String name;
 
-    private Integer type;
+    @ApiModelProperty("事务类型")
+    private String type;
 
+    @ApiModelProperty("过敏标签")
     private String allergenTags;
 
+    @ApiModelProperty("备注")
     private String remark;
 }
