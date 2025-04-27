@@ -3,7 +3,7 @@ mysql:
   ip: 47.108.132.109
   port: 3306
   db: childcare
-  username: root
+  username: Childcare
   password: 123456
 
 redis:
