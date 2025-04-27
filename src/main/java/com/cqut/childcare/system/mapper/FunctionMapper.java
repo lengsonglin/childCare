@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @ClassName FunctionMapper
  * @Version 1.0
  */
-@Mapper
+
 public interface FunctionMapper extends BaseMapper<Function> {
 } 

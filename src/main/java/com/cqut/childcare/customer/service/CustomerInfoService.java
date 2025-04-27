@@ -33,4 +33,7 @@ public interface CustomerInfoService {
     CustomerInfoVo modifyCustomerInfo(Long cid, ModifyCInfoDto modifyCInfoDto);
 
     ApiResult<Map<String, String>> getCustomerAvatar(String avatar);
+
+    ApiResult getCustomerInfoByTelPhone(String telPhone);
+
 }

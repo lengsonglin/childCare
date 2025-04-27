@@ -1,4 +1,4 @@
-package com.cqut.childcare.config;
+package com.cqut.childcare.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ import java.util.Objects;
 @Configuration
 public class RedisConfig {
 
-    @Bean("myRedisTemplate")
+    @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         // 创建模板
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();

@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @ClassName DictValueMapper
  * @Version 1.0
  */
-@Mapper
+
 public interface DictValueMapper extends BaseMapper<dictValue> {
     /**
      * 根据字典键ID删除字典值

@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @ClassName SystemSettingMapper
  * @Version 1.0
  */
-@Mapper
+
 public interface SystemSettingMapper extends BaseMapper<SystemSetting> {
 } 

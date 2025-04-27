@@ -16,6 +16,8 @@
 
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
         <lombok.version>1.18.10</lombok.version>
@@ -26,7 +28,6 @@
         <minio.version>8.4.5</minio.version>
         <okhttp.version>4.8.1</okhttp.version>
         <jjwt.version>0.9.1</jjwt.version>
-
     </properties>
     <dependencies>
         <dependency>
@@ -37,6 +38,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <!--   lombok     -->
@@ -159,6 +164,12 @@
             <artifactId>httpcore</artifactId>
             <version>4.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
 
     </dependencies>
 

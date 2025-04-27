@@ -6,7 +6,7 @@ package com.cqut.childcare.common.constant;
  * @ClassName MinioConstant
  * @Version 1.0
  */
-public class MinioConstant {
+public class MinioBucketConstant {
     /*
     Amazon S3的存储桶名称必须满足以下条件：
     1. **长度限制**：存储桶名称必须在3到63个字符之间。

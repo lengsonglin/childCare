@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @ClassName DictKeyMapper
  * @Version 1.0
  */
-@Mapper
+
 public interface DictKeyMapper extends BaseMapper<DictKey> {
 } 

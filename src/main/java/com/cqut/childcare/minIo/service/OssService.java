@@ -1,7 +1,6 @@
 package com.cqut.childcare.minIo.service;
 
 import cn.hutool.core.lang.UUID;
-import com.cqut.childcare.common.constant.MinioConstant;
 import com.cqut.childcare.minIo.MinIOTemplate;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;

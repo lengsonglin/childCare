@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
  * @ClassName RelationShipType
  * @Version 1.0
  */
-@AllArgsConstructor
-@Getter
+    @AllArgsConstructor
+    @Getter
 public enum RelationshipTypeEnum {
 
     MAIN_FAMILY(0,"绑定孩子的第一个家长"),

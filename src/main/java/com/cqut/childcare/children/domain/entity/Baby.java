@@ -49,7 +49,7 @@ public class Baby implements Serializable {
     private String avatar;
 
     @TableField("create_time")
-    private String createTime;
+    private Date createTime;
 
     /**
      *  0  正常

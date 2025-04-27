@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @ClassName DevelopmentCheckMapper
  * @Version 1.0
  */
-@Mapper
+
 public interface DevelopmentCheckMapper extends BaseMapper<DevelopmentCheck> {
 } 

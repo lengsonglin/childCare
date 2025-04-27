@@ -6,6 +6,7 @@ import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.utils.RequestHolder;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,9 @@ public class BabyController {
 
     @Autowired
     private BabyService babyService;
-
+    @ApiOperation(value = "添加宝宝")
     @PostMapping(value = "/addBaby",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResult<Baby> createBaby(@Valid @ModelAttribute BabyAddDto babyCreateDto){
+    public ApiResult createBaby(@Valid @ModelAttribute BabyAddDto babyCreateDto){
         Long cid = RequestHolder.get().getCid();
         babyService.createBaby(babyCreateDto,cid);
         return ApiResult.success();

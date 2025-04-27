@@ -1,10 +1,11 @@
 package com.cqut.childcare.customer.service.impl;
 
-import com.cqut.childcare.common.constant.MinioConstant;
+import com.cqut.childcare.common.constant.MinioBucketConstant;
 import com.cqut.childcare.common.constant.RedisKey;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
 import com.cqut.childcare.common.exception.CommonErrorEnum;
+import com.cqut.childcare.common.exception.RelationErrorEnum;
 import com.cqut.childcare.common.utils.JsonUtils;
 import com.cqut.childcare.common.utils.JwtUtils;
 import com.cqut.childcare.common.utils.RedisUtils;
@@ -184,7 +185,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         String avatarUrl = "";
           //判断头像是否为空
         if(Objects.nonNull(modifyCInfoDto.getAvatarFile())){
-            avatarUrl = ossService.uploadAvatar(modifyCInfoDto.getAvatarFile(), MinioConstant.CUSTOMER_AVATAR_BUCKET);
+            avatarUrl = ossService.uploadAvatar(modifyCInfoDto.getAvatarFile(), MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
         }
         Customer customer = new Customer();
         BeanUtils.copyProperties(modifyCInfoDto,customer);
@@ -205,7 +206,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
     public ApiResult<Map<String, String>> getCustomerAvatar(String avatar) {
         String avatarUrl = "";
         try {
-            avatarUrl  = ossService.generateAvatarUrl(avatar, MinioConstant.CUSTOMER_AVATAR_BUCKET);
+            avatarUrl  = ossService.generateAvatarUrl(avatar, MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
         } catch (Exception e) {
             throw new AppRuntimeException(CommonErrorEnum.GET_AVATAR_URL_FAILED);
         }
@@ -213,4 +214,17 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         data.put("avatarUrl",avatarUrl);
         return ApiResult.success(data);
     }
+
+    @Override
+    public ApiResult getCustomerInfoByTelPhone(String telPhone) {
+        Customer customer = customerDao.getCustomerInfoByTelPhone(telPhone);
+        if(Objects.nonNull(customer)){
+            CustomerBaseInfo customerBaseInfo = new CustomerBaseInfo();
+            BeanUtils.copyProperties(customer,customerBaseInfo);
+            return ApiResult.success(customerBaseInfo);
+        }
+        return ApiResult.fail(RelationErrorEnum.INVALID_TELPHONE);
+    }
+
+
 }

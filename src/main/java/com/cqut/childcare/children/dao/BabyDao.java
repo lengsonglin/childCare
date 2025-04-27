@@ -5,6 +5,8 @@ import com.cqut.childcare.children.domain.entity.Baby;
 import com.cqut.childcare.children.mapper.BabyMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @Description
  * @Author Faiz
@@ -13,4 +15,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BabyDao extends ServiceImpl<BabyMapper, Baby> {
+    public Baby getByBirthdayAndName(Date birthday, String name) {
+        return lambdaQuery()
+                .eq(Baby::getBirthday,birthday)
+                .eq(Baby::getName,name)
+                .one();
+
+    }
 }

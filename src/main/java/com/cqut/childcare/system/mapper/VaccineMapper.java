@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @ClassName VaccineMapper
  * @Version 1.0
  */
-@Mapper
+
 public interface VaccineMapper extends BaseMapper<Vaccine> {
 } 

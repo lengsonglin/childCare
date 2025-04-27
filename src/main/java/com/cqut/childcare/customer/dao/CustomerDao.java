@@ -56,4 +56,9 @@ public class CustomerDao extends ServiceImpl<CustomerMapper, Customer> {
         lambdaUpdate().eq(Customer::getId,id)
                 .remove();
     }
+
+    public Customer getCustomerInfoByTelPhone(String telPhone) {
+        return lambdaQuery().eq(StringUtils.isNotBlank(telPhone),Customer::getTelPhone,telPhone)
+                .one();
+    }
 }

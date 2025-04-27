@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerBaseInfo {
-
+    private Long id;
     private String nickName;
     private String gender;
     private int age;
