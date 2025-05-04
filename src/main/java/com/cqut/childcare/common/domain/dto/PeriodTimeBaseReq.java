@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.tomcat.jni.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -23,7 +24,9 @@ public class PeriodTimeBaseReq {
     @ApiModelProperty("宝宝Id")
     private Long babyId;
     @ApiModelProperty("开始时间")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate beginTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty("结束时间")
     private LocalDate endTime;
 
