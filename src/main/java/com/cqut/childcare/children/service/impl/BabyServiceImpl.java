@@ -7,6 +7,7 @@ import com.cqut.childcare.children.domain.dto.CreateBabyDto;
 import com.cqut.childcare.children.domain.entity.Baby;
 import com.cqut.childcare.children.domain.entity.CustomerBabyRelation;
 import com.cqut.childcare.children.domain.enums.RelationshipTypeEnum;
+import com.cqut.childcare.children.domain.vo.BabyVo;
 import com.cqut.childcare.children.mapper.BabyMapper;
 import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.constant.MinioBucketConstant;
@@ -20,8 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description
@@ -100,7 +105,43 @@ public class BabyServiceImpl implements BabyService {
     }
 
     @Override
-    public List<Baby> getRelatedBaby(Long cid) {
-        return babyMapper.getRelatedBaby(cid);
+    public List<BabyVo> getRelatedBaby(Long cid) {
+        List<Baby> babyList = babyMapper.getRelatedBaby(cid);
+        List<BabyVo> babyVoList = babyList.stream()
+                .map(baby -> BabyVo.builder()
+                        .id(baby.getId())
+                        .name(baby.getName())
+                        .gender(baby.getGender())
+                        .age(calculateAge(baby.getBirthday())) // 调用年龄计算
+                        .introduce(baby.getIntroduce())
+                        .build())
+                .collect(Collectors.toList());
+        return babyVoList;
+    }
+
+    public static String calculateAge(Date birthday) {
+        if (birthday == null) return "未出生";
+
+        // 确保时区与数据库存储一致（假设数据库为GMT+8）
+        ZoneId zoneId = ZoneId.of("GMT+8");
+        LocalDate birthDate = birthday.toInstant().atZone(zoneId).toLocalDate();
+        LocalDate currentDate = LocalDate.now(zoneId);
+
+        // 计算月份差
+        long totalMonths = ChronoUnit.MONTHS.between(birthDate, currentDate);
+        if (totalMonths >= 12) {
+            return (totalMonths / 12) + "岁";
+        } else if (totalMonths > 0) {
+            return totalMonths + "月";
+        }
+
+        // 计算周数差
+        long weeks = ChronoUnit.WEEKS.between(birthDate, currentDate);
+        if (weeks > 0) {
+            return weeks + "周";
+        }
+        // 处理不足一周的情况
+        long days = ChronoUnit.DAYS.between(birthDate, currentDate);
+        return days >= 0 ? days + "天" : "未出生";
     }
 }

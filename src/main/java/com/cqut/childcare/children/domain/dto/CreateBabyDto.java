@@ -1,7 +1,9 @@
 package com.cqut.childcare.children.domain.dto;
 
 import com.cqut.childcare.common.annotation.FileSize;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
@@ -20,11 +22,11 @@ public class CreateBabyDto {
     @NotBlank(message = "姓名不能为空")
     private String name;
 
-    @NotBlank(message = "性别不能为空")
-    @Pattern(regexp = "男|女|未知", message = "性别格式错误")
     private String gender;
 
     @NotNull(message = "出生日期不能为空")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date birthday;
     private String introduce;
 

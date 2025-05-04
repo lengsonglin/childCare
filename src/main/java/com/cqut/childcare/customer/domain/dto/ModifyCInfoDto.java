@@ -22,7 +22,6 @@ public class ModifyCInfoDto {
     @ApiModelProperty("昵称")
     private String nickName;
     @ApiModelProperty("性别 男|女")
-    @Pattern(regexp = "男|女|",message = "性别格式错误")
     private String gender;
 
     @ApiModelProperty("年龄")

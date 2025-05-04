@@ -3,6 +3,7 @@ package com.cqut.childcare.children.service;
 import com.cqut.childcare.children.domain.dto.AddBabyDto;
 import com.cqut.childcare.children.domain.dto.CreateBabyDto;
 import com.cqut.childcare.children.domain.entity.Baby;
+import com.cqut.childcare.children.domain.vo.BabyVo;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface BabyService {
 
     void unbindBaby(Long cid, Long babyId);
 
-    List<Baby> getRelatedBaby(Long cid);
+    List<BabyVo> getRelatedBaby(Long cid);
 }
