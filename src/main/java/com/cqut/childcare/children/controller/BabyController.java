@@ -2,6 +2,7 @@ package com.cqut.childcare.children.controller;
 
 import com.cqut.childcare.children.domain.dto.AddBabyDto;
 import com.cqut.childcare.children.domain.dto.CreateBabyDto;
+import com.cqut.childcare.children.domain.entity.Baby;
 import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.utils.RequestHolder;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Description
@@ -47,6 +49,13 @@ public class BabyController {
         Long cid = RequestHolder.get().getCid();
         babyService.unbindBaby(cid,babyId);
         return ApiResult.success();
+    }
+    @ApiOperation(value = "获取当前用户关联的宝宝")
+    @GetMapping(value = "/getRelatedBaby")
+    public ApiResult<List<Baby>> getRelatedBaby(){
+        Long cid = RequestHolder.get().getCid();
+        List<Baby> data = babyService.getRelatedBaby(cid);
+        return ApiResult.success(data);
     }
 
 

@@ -7,6 +7,7 @@ import com.cqut.childcare.children.domain.dto.CreateBabyDto;
 import com.cqut.childcare.children.domain.entity.Baby;
 import com.cqut.childcare.children.domain.entity.CustomerBabyRelation;
 import com.cqut.childcare.children.domain.enums.RelationshipTypeEnum;
+import com.cqut.childcare.children.mapper.BabyMapper;
 import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.constant.MinioBucketConstant;
 import com.cqut.childcare.common.exception.AppRuntimeException;
@@ -36,6 +37,8 @@ public class BabyServiceImpl implements BabyService {
     private CustomerBabyRelationDao customerBabyRelationDao;
     @Autowired
     private OssService ossService;
+    @Autowired
+    private BabyMapper babyMapper;
 
 
     @Override
@@ -94,5 +97,10 @@ public class BabyServiceImpl implements BabyService {
     @Override
     public void unbindBaby(Long cid, Long babyId) {
         customerBabyRelationDao.unbindRelation(cid,babyId);
+    }
+
+    @Override
+    public List<Baby> getRelatedBaby(Long cid) {
+        return babyMapper.getRelatedBaby(cid);
     }
 }
