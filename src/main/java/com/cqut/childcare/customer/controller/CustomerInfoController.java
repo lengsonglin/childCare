@@ -66,8 +66,9 @@ public class CustomerInfoController {
     }
     @ApiOperation("获取用户头像")
     @GetMapping("/getCAvatar")
-    public ApiResult<Map<String,String>> getCustomerAvatar(@RequestParam(name = "用户头像名") String avatar){
-        return customerInfoService.getCustomerAvatar(avatar);
+    public ApiResult<Map<String,String>> getCustomerAvatar(){
+        Long cid = RequestHolder.get().getCid();
+        return customerInfoService.getCustomerAvatar(cid);
     }
 
 }

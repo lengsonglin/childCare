@@ -27,4 +27,18 @@ public class CustomerBabyRelationDao extends ServiceImpl<CustomerBabyRelationMap
                 .eq(CustomerBabyRelation::getCustomerId,cid)
                 .one();
     }
+
+    public List<CustomerBabyRelation> getRelationByType(Integer type,Long babyId) {
+        return lambdaQuery()
+                .eq(CustomerBabyRelation::getBabyId,babyId)
+                .eq(CustomerBabyRelation::getRelationship,type)
+                .list();
+    }
+
+    public void unbindRelation(Long cid, Long babyId) {
+        lambdaUpdate()
+                .eq(CustomerBabyRelation::getCustomerId,cid)
+                .eq(CustomerBabyRelation::getBabyId,babyId)
+                .remove();
+    }
 }

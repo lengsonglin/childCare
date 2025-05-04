@@ -185,7 +185,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         String avatarUrl = "";
           //判断头像是否为空
         if(Objects.nonNull(modifyCInfoDto.getAvatarFile())){
-            avatarUrl = ossService.uploadAvatar(modifyCInfoDto.getAvatarFile(), MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
+            avatarUrl = ossService.uploadFile(modifyCInfoDto.getAvatarFile(), MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
         }
         Customer customer = new Customer();
         BeanUtils.copyProperties(modifyCInfoDto,customer);
@@ -203,10 +203,13 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
     }
 
     @Override
-    public ApiResult<Map<String, String>> getCustomerAvatar(String avatar) {
+    public ApiResult<Map<String, String>> getCustomerAvatar(Long cid) {
+        String avatar = customerDao.getByCid(cid).getAvatar();
         String avatarUrl = "";
         try {
-            avatarUrl  = ossService.generateAvatarUrl(avatar, MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
+            if(StringUtils.hasText(avatar)){
+                avatarUrl  = ossService.generateFileUrl(avatar, MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
+            }
         } catch (Exception e) {
             throw new AppRuntimeException(CommonErrorEnum.GET_AVATAR_URL_FAILED);
         }

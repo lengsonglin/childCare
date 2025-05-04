@@ -1,7 +1,7 @@
 package com.cqut.childcare.children.service;
 
-import com.cqut.childcare.children.domain.dto.BabyAddDto;
-import com.cqut.childcare.common.domain.vo.ApiResult;
+import com.cqut.childcare.children.domain.dto.AddBabyDto;
+import com.cqut.childcare.children.domain.dto.CreateBabyDto;
 
 /**
  * @Description
@@ -10,5 +10,9 @@ import com.cqut.childcare.common.domain.vo.ApiResult;
  * @Version 1.0
  */
 public interface BabyService {
-    void createBaby(BabyAddDto babyCreateDto, Long cid);
+    void createBaby(CreateBabyDto babyCreateDto, Long cid);
+
+    void addBaby(AddBabyDto addBabyDto, Long cid);
+
+    void unbindBaby(Long cid, Long babyId);
 }

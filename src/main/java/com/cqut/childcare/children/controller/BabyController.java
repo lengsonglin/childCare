@@ -1,7 +1,7 @@
 package com.cqut.childcare.children.controller;
 
-import com.cqut.childcare.children.domain.dto.BabyAddDto;
-import com.cqut.childcare.children.domain.entity.Baby;
+import com.cqut.childcare.children.domain.dto.AddBabyDto;
+import com.cqut.childcare.children.domain.dto.CreateBabyDto;
 import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.utils.RequestHolder;
@@ -25,11 +25,31 @@ public class BabyController {
 
     @Autowired
     private BabyService babyService;
-    @ApiOperation(value = "添加宝宝")
-    @PostMapping(value = "/addBaby",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResult createBaby(@Valid @ModelAttribute BabyAddDto babyCreateDto){
+    @ApiOperation(value = "家长添加宝宝")
+    @PostMapping(value = "/family/addBaby",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResult createBaby(@Valid @ModelAttribute CreateBabyDto babyCreateDto){
         Long cid = RequestHolder.get().getCid();
         babyService.createBaby(babyCreateDto,cid);
         return ApiResult.success();
     }
+
+    @ApiOperation(value = "托育员添加宝宝")
+    @PostMapping(value = "/childWorker/addBaby")
+    public ApiResult addBaby(@Valid @RequestBody AddBabyDto addBabyDto){
+        Long cid = RequestHolder.get().getCid();
+        babyService.addBaby(addBabyDto,cid);
+        return ApiResult.success();
+    }
+
+    @ApiOperation(value = "解绑与宝宝关系")
+    @PostMapping(value = "/unbindBaby/{babyId}")
+    public ApiResult unbindBaby(@PathVariable Long babyId){
+        Long cid = RequestHolder.get().getCid();
+        babyService.unbindBaby(cid,babyId);
+        return ApiResult.success();
+    }
+
+
+
+
 }

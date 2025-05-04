@@ -43,13 +43,13 @@ public class CleanController {
     }
 
     @ApiOperation(value = "修改清洁记录")
-    @PostMapping(value = "/{cleanId}/modifyCleanRecord")
+    @PostMapping(value = "/modifyCleanRecord/{cleanId}")
     public ApiResult modifyCleanRecord(@Valid @RequestBody CleanDto cleanDto,@PathVariable Long cleanId){
         Long cid = RequestHolder.get().getCid();
         return cleanService.modifyCleanRecord(cid,cleanDto,cleanId);
     }
     @ApiOperation(value = "删除清洁记录")
-    @DeleteMapping(value = "/{cleanId}/deleteCleanRecord")
+    @DeleteMapping(value = "/deleteCleanRecord/{cleanId}")
     public ApiResult deleteCleanRecord(@PathVariable Long cleanId){
         Long cid = RequestHolder.get().getCid();
         return cleanService.deleteCleanRecord(cid,cleanId);

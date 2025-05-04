@@ -16,7 +16,7 @@ import java.util.Date;
  * @Version 1.0
  */
 @Data
-public class BabyAddDto {
+public class CreateBabyDto {
     @NotBlank(message = "姓名不能为空")
     private String name;
 

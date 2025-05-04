@@ -18,6 +18,7 @@ public class MinioBucketConstant {
      */
     public static final String BABY_AVATAR_BUCKET = "baby-avatar";
     public static final String CUSTOMER_AVATAR_BUCKET = "customer-avatar";
-
+    public static final String BABY_DEFECATE_BUCKET = "baby-defecate";
+    public static final String BABY_DINING_BUCKET = "baby-dining";
 
 }

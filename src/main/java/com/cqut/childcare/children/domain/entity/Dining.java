@@ -42,5 +42,7 @@ public class Dining implements Serializable {
 
     private String photoUrl;
 
+    private Long createBy;
+
     private String remark;
 } 

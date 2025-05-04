@@ -2,13 +2,15 @@ package com.cqut.childcare.children.service.impl;
 
 import com.cqut.childcare.children.dao.BabyDao;
 import com.cqut.childcare.children.dao.CustomerBabyRelationDao;
-import com.cqut.childcare.children.domain.dto.BabyAddDto;
+import com.cqut.childcare.children.domain.dto.AddBabyDto;
+import com.cqut.childcare.children.domain.dto.CreateBabyDto;
 import com.cqut.childcare.children.domain.entity.Baby;
 import com.cqut.childcare.children.domain.entity.CustomerBabyRelation;
 import com.cqut.childcare.children.domain.enums.RelationshipTypeEnum;
 import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.constant.MinioBucketConstant;
-import com.cqut.childcare.common.domain.vo.ApiResult;
+import com.cqut.childcare.common.exception.AppRuntimeException;
+import com.cqut.childcare.common.exception.BabyEventEnum;
 import com.cqut.childcare.minIo.service.OssService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -38,7 +40,7 @@ public class BabyServiceImpl implements BabyService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createBaby(BabyAddDto babyCreateDto, Long cid) {
+    public void createBaby(CreateBabyDto babyCreateDto, Long cid) {
         //1. 先检查这个宝宝是否已经存在
         Date birthday = babyCreateDto.getBirthday();
         String name = babyCreateDto.getName();
@@ -52,7 +54,7 @@ public class BabyServiceImpl implements BabyService {
             BeanUtils.copyProperties(babyCreateDto,temp);
             temp.setCreateTime(new Date());
             if(ObjectUtils.isNotEmpty(file)) {
-                String s = ossService.uploadAvatar(file, MinioBucketConstant.BABY_AVATAR_BUCKET);
+                String s = ossService.uploadFile(file, MinioBucketConstant.BABY_AVATAR_BUCKET);
                 temp.setAvatar(s);
             }
             babyDao.save(temp);
@@ -71,5 +73,26 @@ public class BabyServiceImpl implements BabyService {
         relationship.setBabyId(babyId);
         relationship.setCustomerId(cid);
         customerBabyRelationDao.save(relationship);
+    }
+
+    @Override
+    public void addBaby(AddBabyDto addBabyDto, Long cid) {
+        //1. 先检查这个宝宝是否已经存在
+        Date birthday = addBabyDto.getBirthday();
+        String name = addBabyDto.getName();
+        Baby baby = babyDao.getByBirthdayAndName(birthday,name);
+        if(ObjectUtils.isEmpty(baby)){
+            throw new AppRuntimeException(BabyEventEnum.BABY_NOT_EXIST);
+        }
+        customerBabyRelationDao.save(CustomerBabyRelation.builder()
+                .babyId(baby.getId())
+                .customerId(cid)
+                .build());
+
+    }
+
+    @Override
+    public void unbindBaby(Long cid, Long babyId) {
+        customerBabyRelationDao.unbindRelation(cid,babyId);
     }
 }

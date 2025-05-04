@@ -78,6 +78,11 @@ public class CustomerRelationServiceImpl implements CustomerRelationService {
             if(ObjectUtils.isNotEmpty(customerRelation)){
                 List<CustomerRelation> customerRelations = customerRelationDao.getRelationByMainId(customerRelation.getMainId());
                 relations = customerRelations.stream().map(CustomerRelation::getSubId).collect(Collectors.toList());
+                //托育员添加的记录
+                List<CustomerBabyRelation> relation = customerBabyRelationDao.getRelationByType(RelationshipTypeEnum.CHILDCARE_WORKER.getType(),babyId);
+                for (CustomerBabyRelation item:relation) {
+                    relations.add(item.getCustomerId());
+                }
             }
 
         }
