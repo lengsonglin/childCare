@@ -64,11 +64,10 @@ public class CustomerInfoController {
         CustomerInfoVo customerInfoVo = customerInfoService.modifyCustomerInfo(cid,modifyCInfoDto);
         return ApiResult.success(customerInfoVo);
     }
-    @ApiOperation("获取用户头像")
-    @GetMapping("/getCAvatar")
-    public ApiResult<Map<String,String>> getCustomerAvatar(){
-        Long cid = RequestHolder.get().getCid();
-        return customerInfoService.getCustomerAvatar(cid);
+    @ApiOperation("获取文件")
+    @GetMapping("/getFile/{filePath}")
+    public ApiResult<Map<String,String>> getCustomerAvatar(@PathVariable String filePath){
+        return customerInfoService.getCustomerAvatar(filePath);
     }
 
 }

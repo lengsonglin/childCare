@@ -1,11 +1,11 @@
 package com.cqut.childcare.children.service.babyEvent.impl;
 
-import com.cqut.childcare.children.dao.CleanDao;
 import com.cqut.childcare.children.dao.CustomerBabyRelationDao;
-import com.cqut.childcare.children.domain.dto.babyEvent.CleanDto;
-import com.cqut.childcare.children.domain.entity.Clean;
+import com.cqut.childcare.children.dao.DevelopmentCheckRecordDao;
+import com.cqut.childcare.children.domain.dto.babyEvent.DevelopmentCheckRecordDto;
 import com.cqut.childcare.children.domain.entity.CustomerBabyRelation;
-import com.cqut.childcare.children.service.babyEvent.CleanService;
+import com.cqut.childcare.children.domain.entity.DevelopmentCheckRecord;
+import com.cqut.childcare.children.service.babyEvent.DevelopmentCheckRecordService;
 import com.cqut.childcare.common.domain.dto.PeriodTimeBaseReq;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
@@ -18,67 +18,58 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @Description
- * @Author Faiz
- * @ClassName CleanServiceImpl
- * @Version 1.0
- */
 @Service
-public class CleanServiceImpl implements CleanService {
-
+public class DevelopmentCheckRecordServiceImpl implements DevelopmentCheckRecordService {
     @Autowired
-    private CleanDao cleanDao;
-
+    private DevelopmentCheckRecordDao developmentCheckRecordDao;
     @Autowired
     private CustomerRelationService customerRelationService;
-
     @Autowired
     private CustomerBabyRelationDao customerBabyRelationDao;
 
     @Override
-    public void addCleanRecord(Long cid, CleanDto cleanDto) {
-        CustomerBabyRelation relation = customerBabyRelationDao.getRelationByCidAndBabyId(cid, cleanDto.getBabyId());
+    public void addDevelopmentCheckRecord(Long cid, DevelopmentCheckRecordDto dto) {
+        CustomerBabyRelation relation = customerBabyRelationDao.getRelationByCidAndBabyId(cid, dto.getBabyId());
         if (ObjectUtils.isEmpty(relation)) {
             throw new AppRuntimeException(BabyEventEnum.PERMISSION_ERROR);
         }
-        Clean clean = new Clean();
-        BeanUtils.copyProperties(cleanDto, clean);
-        clean.setCreateBy(cid);
-        cleanDao.save(clean);
+        DevelopmentCheckRecord record = new DevelopmentCheckRecord();
+        BeanUtils.copyProperties(dto, record);
+        record.setCreateBy(cid);
+        developmentCheckRecordDao.save(record);
     }
 
     @Override
-    public List<Clean> getCleanRecord(Long cid, PeriodTimeBaseReq periodTimeBaseReq) {
+    public List<DevelopmentCheckRecord> getDevelopmentCheckRecord(Long cid, PeriodTimeBaseReq periodTimeBaseReq) {
         List<Long> relationCustomers = customerRelationService.getRelationCustomer(cid, periodTimeBaseReq.getBabyId());
-        return cleanDao.getCleanRecord(periodTimeBaseReq.getBabyId(), relationCustomers, periodTimeBaseReq);
+        return developmentCheckRecordDao.getDevelopmentCheckRecord(periodTimeBaseReq.getBabyId(), relationCustomers, periodTimeBaseReq);
     }
 
     @Override
-    public ApiResult modifyCleanRecord(Long cid, CleanDto cleanDto, Long cleanId) {
-        Clean record = cleanDao.getById(cleanId);
+    public ApiResult modifyDevelopmentCheckRecord(Long cid, DevelopmentCheckRecordDto dto, Long recordId) {
+        DevelopmentCheckRecord record = developmentCheckRecordDao.getById(recordId);
         if (ObjectUtils.isNotEmpty(record)) {
             if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
-            Clean temp = new Clean();
-            BeanUtils.copyProperties(cleanDto, temp);
+            DevelopmentCheckRecord temp = new DevelopmentCheckRecord();
+            BeanUtils.copyProperties(dto, temp);
             temp.setBabyId(record.getBabyId());
-            temp.setId(cleanId);
-            cleanDao.updateById(temp);
+            temp.setId(recordId);
+            developmentCheckRecordDao.updateById(temp);
         }
         return ApiResult.success();
     }
 
     @Override
-    public ApiResult deleteCleanRecord(Long cid, Long cleanId) {
-        Clean record = cleanDao.getById(cleanId);
+    public ApiResult deleteDevelopmentCheckRecord(Long cid, Long recordId) {
+        DevelopmentCheckRecord record = developmentCheckRecordDao.getById(recordId);
         if (ObjectUtils.isNotEmpty(record)) {
             if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
-            cleanDao.removeById(cleanId);
+            developmentCheckRecordDao.removeById(recordId);
         }
         return ApiResult.success();
     }
-}
+} 

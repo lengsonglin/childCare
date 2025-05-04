@@ -1,11 +1,11 @@
 package com.cqut.childcare.children.service.babyEvent.impl;
 
-import com.cqut.childcare.children.dao.CleanDao;
 import com.cqut.childcare.children.dao.CustomerBabyRelationDao;
-import com.cqut.childcare.children.domain.dto.babyEvent.CleanDto;
-import com.cqut.childcare.children.domain.entity.Clean;
+import com.cqut.childcare.children.dao.SleepDao;
+import com.cqut.childcare.children.domain.dto.babyEvent.SleepDto;
 import com.cqut.childcare.children.domain.entity.CustomerBabyRelation;
-import com.cqut.childcare.children.service.babyEvent.CleanService;
+import com.cqut.childcare.children.domain.entity.Sleep;
+import com.cqut.childcare.children.service.babyEvent.SleepService;
 import com.cqut.childcare.common.domain.dto.PeriodTimeBaseReq;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
@@ -19,16 +19,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @Description
+ * @Description 睡眠记录服务实现类
  * @Author Faiz
- * @ClassName CleanServiceImpl
+ * @ClassName SleepServiceImpl
  * @Version 1.0
  */
 @Service
-public class CleanServiceImpl implements CleanService {
+public class SleepServiceImpl implements SleepService {
 
     @Autowired
-    private CleanDao cleanDao;
+    private SleepDao sleepDao;
 
     @Autowired
     private CustomerRelationService customerRelationService;
@@ -37,48 +37,49 @@ public class CleanServiceImpl implements CleanService {
     private CustomerBabyRelationDao customerBabyRelationDao;
 
     @Override
-    public void addCleanRecord(Long cid, CleanDto cleanDto) {
-        CustomerBabyRelation relation = customerBabyRelationDao.getRelationByCidAndBabyId(cid, cleanDto.getBabyId());
+    public void addSleepRecord(Long cid, SleepDto sleepDto) {
+        // 检查是否有亲属关系
+        CustomerBabyRelation relation = customerBabyRelationDao.getRelationByCidAndBabyId(cid, sleepDto.getBabyId());
         if (ObjectUtils.isEmpty(relation)) {
             throw new AppRuntimeException(BabyEventEnum.PERMISSION_ERROR);
         }
-        Clean clean = new Clean();
-        BeanUtils.copyProperties(cleanDto, clean);
-        clean.setCreateBy(cid);
-        cleanDao.save(clean);
+        Sleep sleep = new Sleep();
+        BeanUtils.copyProperties(sleepDto, sleep);
+        sleep.setCreateBy(cid);
+        sleepDao.save(sleep);
     }
 
     @Override
-    public List<Clean> getCleanRecord(Long cid, PeriodTimeBaseReq periodTimeBaseReq) {
+    public List<Sleep> getSleepRecord(Long cid, PeriodTimeBaseReq periodTimeBaseReq) {
         List<Long> relationCustomers = customerRelationService.getRelationCustomer(cid, periodTimeBaseReq.getBabyId());
-        return cleanDao.getCleanRecord(periodTimeBaseReq.getBabyId(), relationCustomers, periodTimeBaseReq);
+        return sleepDao.getSleepRecord(periodTimeBaseReq.getBabyId(), relationCustomers, periodTimeBaseReq);
     }
 
     @Override
-    public ApiResult modifyCleanRecord(Long cid, CleanDto cleanDto, Long cleanId) {
-        Clean record = cleanDao.getById(cleanId);
+    public ApiResult modifySleepRecord(Long cid, SleepDto sleepDto, Long sleepId) {
+        Sleep record = sleepDao.getById(sleepId);
         if (ObjectUtils.isNotEmpty(record)) {
             if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
-            Clean temp = new Clean();
-            BeanUtils.copyProperties(cleanDto, temp);
+            Sleep temp = new Sleep();
+            BeanUtils.copyProperties(sleepDto, temp);
             temp.setBabyId(record.getBabyId());
-            temp.setId(cleanId);
-            cleanDao.updateById(temp);
+            temp.setId(sleepId);
+            sleepDao.updateById(temp);
         }
         return ApiResult.success();
     }
 
     @Override
-    public ApiResult deleteCleanRecord(Long cid, Long cleanId) {
-        Clean record = cleanDao.getById(cleanId);
+    public ApiResult deleteSleepRecord(Long cid, Long sleepId) {
+        Sleep record = sleepDao.getById(sleepId);
         if (ObjectUtils.isNotEmpty(record)) {
             if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
-            cleanDao.removeById(cleanId);
+            sleepDao.removeById(sleepId);
         }
         return ApiResult.success();
     }
-}
+} 

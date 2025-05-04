@@ -40,4 +40,6 @@ public class Sick implements Serializable {
     private String temperature;
 
     private String remark;
+
+    private Long createBy;
 } 

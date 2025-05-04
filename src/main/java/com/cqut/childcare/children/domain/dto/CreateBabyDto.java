@@ -30,7 +30,7 @@ public class CreateBabyDto {
     private Date birthday;
     private String introduce;
 
-    @FileSize(max = 5 * 1024 * 1024, message = "头像不能超过5MB")
+    @FileSize(max = 10 * 1024 * 1024, message = "头像不能超过10MB")
     private MultipartFile avatarFile; // 接收文件对象
 
 }

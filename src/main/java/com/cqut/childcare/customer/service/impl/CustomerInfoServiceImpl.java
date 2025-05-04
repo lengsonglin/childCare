@@ -202,15 +202,14 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
     }
 
     @Override
-    public ApiResult<Map<String, String>> getCustomerAvatar(Long cid) {
-        String avatar = customerDao.getByCid(cid).getAvatar();
+    public ApiResult<Map<String, String>> getCustomerAvatar(String filePath) {
         String avatarUrl = "";
         try {
-            if(StringUtils.hasText(avatar)){
-                avatarUrl  = ossService.generateFileUrl(avatar, MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
+            if(StringUtils.hasText(filePath)){
+                avatarUrl  = ossService.findObjectAcrossBuckets(filePath);
             }
         } catch (Exception e) {
-            throw new AppRuntimeException(CommonErrorEnum.GET_AVATAR_URL_FAILED);
+            throw new AppRuntimeException(CommonErrorEnum.GET_FILE_URL_FAILED);
         }
         Map<String,String> data = new HashMap<>();
         data.put("avatarUrl",avatarUrl);

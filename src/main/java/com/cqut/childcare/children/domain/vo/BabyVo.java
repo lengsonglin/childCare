@@ -26,4 +26,6 @@ public class BabyVo {
 
     private String introduce;
 
+    private String avatar;
+
 }

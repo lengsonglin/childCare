@@ -114,13 +114,14 @@ public class BabyServiceImpl implements BabyService {
                         .gender(baby.getGender())
                         .age(calculateAge(baby.getBirthday())) // 调用年龄计算
                         .introduce(baby.getIntroduce())
+                        .avatar(baby.getAvatar())
                         .build())
                 .collect(Collectors.toList());
         return babyVoList;
     }
 
     public static String calculateAge(Date birthday) {
-        if (birthday == null) return "未出生";
+        if (birthday == null) return "未知";
 
         // 确保时区与数据库存储一致（假设数据库为GMT+8）
         ZoneId zoneId = ZoneId.of("GMT+8");

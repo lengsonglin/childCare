@@ -2,12 +2,10 @@ package com.cqut.childcare.minIo.service;
 
 import cn.hutool.core.lang.UUID;
 import com.cqut.childcare.minIo.MinIOTemplate;
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.RemoveObjectArgs;
+import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
+import io.minio.messages.Bucket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -105,6 +104,30 @@ public class OssService {
         } catch (Exception e) {
             throw new RuntimeException("生成 URL 失败", e);
         }
+    }
+    public String findObjectAcrossBuckets(String targetObjectName) throws Exception {
+        // 1. 获取所有桶
+        List<Bucket> buckets = minioClient.listBuckets();
+
+        // 2. 遍历每个桶，检查对象是否存在
+        for (Bucket bucket : buckets) {
+            String bucketName = bucket.name();
+            try {
+                // 检查对象是否存在（不抛出异常则存在）
+                minioClient.statObject(StatObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(targetObjectName)
+                        .build());
+                // 对象存在，生成预签名URL
+                return generateFileUrl(targetObjectName, bucketName);
+            } catch (Exception e) {
+                // 对象不存在，继续下一个桶
+                continue;
+            }
+        }
+
+        // 3. 未找到对象
+        throw new RuntimeException("Object not found in any bucket");
     }
 
     // 对路径的每一部分进行编码（处理特殊字符）

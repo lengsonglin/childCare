@@ -36,4 +36,6 @@ public class DevelopmentCheckRecord implements Serializable {
     private Byte isComplete;
 
     private String remark;
+
+    private Long createBy;
 } 

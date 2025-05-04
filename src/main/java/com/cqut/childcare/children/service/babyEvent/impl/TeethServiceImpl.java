@@ -1,11 +1,11 @@
 package com.cqut.childcare.children.service.babyEvent.impl;
 
-import com.cqut.childcare.children.dao.CleanDao;
 import com.cqut.childcare.children.dao.CustomerBabyRelationDao;
-import com.cqut.childcare.children.domain.dto.babyEvent.CleanDto;
-import com.cqut.childcare.children.domain.entity.Clean;
+import com.cqut.childcare.children.dao.TeethDao;
+import com.cqut.childcare.children.domain.dto.babyEvent.TeethDto;
 import com.cqut.childcare.children.domain.entity.CustomerBabyRelation;
-import com.cqut.childcare.children.service.babyEvent.CleanService;
+import com.cqut.childcare.children.domain.entity.Teeth;
+import com.cqut.childcare.children.service.babyEvent.TeethService;
 import com.cqut.childcare.common.domain.dto.PeriodTimeBaseReq;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
@@ -18,67 +18,58 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @Description
- * @Author Faiz
- * @ClassName CleanServiceImpl
- * @Version 1.0
- */
 @Service
-public class CleanServiceImpl implements CleanService {
-
+public class TeethServiceImpl implements TeethService {
     @Autowired
-    private CleanDao cleanDao;
-
+    private TeethDao teethDao;
     @Autowired
     private CustomerRelationService customerRelationService;
-
     @Autowired
     private CustomerBabyRelationDao customerBabyRelationDao;
 
     @Override
-    public void addCleanRecord(Long cid, CleanDto cleanDto) {
-        CustomerBabyRelation relation = customerBabyRelationDao.getRelationByCidAndBabyId(cid, cleanDto.getBabyId());
+    public void addTeethRecord(Long cid, TeethDto teethDto) {
+        CustomerBabyRelation relation = customerBabyRelationDao.getRelationByCidAndBabyId(cid, teethDto.getBabyId());
         if (ObjectUtils.isEmpty(relation)) {
             throw new AppRuntimeException(BabyEventEnum.PERMISSION_ERROR);
         }
-        Clean clean = new Clean();
-        BeanUtils.copyProperties(cleanDto, clean);
-        clean.setCreateBy(cid);
-        cleanDao.save(clean);
+        Teeth teeth = new Teeth();
+        BeanUtils.copyProperties(teethDto, teeth);
+        teeth.setCreateBy(cid);
+        teethDao.save(teeth);
     }
 
     @Override
-    public List<Clean> getCleanRecord(Long cid, PeriodTimeBaseReq periodTimeBaseReq) {
+    public List<Teeth> getTeethRecord(Long cid, PeriodTimeBaseReq periodTimeBaseReq) {
         List<Long> relationCustomers = customerRelationService.getRelationCustomer(cid, periodTimeBaseReq.getBabyId());
-        return cleanDao.getCleanRecord(periodTimeBaseReq.getBabyId(), relationCustomers, periodTimeBaseReq);
+        return teethDao.getTeethRecord(periodTimeBaseReq.getBabyId(), relationCustomers, periodTimeBaseReq);
     }
 
     @Override
-    public ApiResult modifyCleanRecord(Long cid, CleanDto cleanDto, Long cleanId) {
-        Clean record = cleanDao.getById(cleanId);
+    public ApiResult modifyTeethRecord(Long cid, TeethDto teethDto, Long teethId) {
+        Teeth record = teethDao.getById(teethId);
         if (ObjectUtils.isNotEmpty(record)) {
             if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
-            Clean temp = new Clean();
-            BeanUtils.copyProperties(cleanDto, temp);
+            Teeth temp = new Teeth();
+            BeanUtils.copyProperties(teethDto, temp);
             temp.setBabyId(record.getBabyId());
-            temp.setId(cleanId);
-            cleanDao.updateById(temp);
+            temp.setId(teethId);
+            teethDao.updateById(temp);
         }
         return ApiResult.success();
     }
 
     @Override
-    public ApiResult deleteCleanRecord(Long cid, Long cleanId) {
-        Clean record = cleanDao.getById(cleanId);
+    public ApiResult deleteTeethRecord(Long cid, Long teethId) {
+        Teeth record = teethDao.getById(teethId);
         if (ObjectUtils.isNotEmpty(record)) {
             if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
-            cleanDao.removeById(cleanId);
+            teethDao.removeById(teethId);
         }
         return ApiResult.success();
     }
-}
+} 

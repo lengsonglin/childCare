@@ -28,7 +28,7 @@ public class ModifyCInfoDto {
     @Max(value = 100,message = "年龄过大")
     private Integer age;
     @ApiModelProperty("头像")
-    @FileSize(max = 5 * 1024 * 1024, message = "头像不能超过5MB")
+    @FileSize(max = 10 * 1024 * 1024, message = "头像不能超过10MB")
     private MultipartFile avatarFile; // 接收文件对象
     @ApiModelProperty("真实姓名")
     private String realName;

@@ -46,7 +46,7 @@ public class DiningController {
 
     @ApiOperation(value = "修改用餐记录")
     @PostMapping(value = "/modifyDiningRecord/{diningId}")
-    public ApiResult modifyDiningRecord(@Valid @RequestBody DiningDto diningDto, @PathVariable Long diningId){
+    public ApiResult modifyDiningRecord(@Valid @ModelAttribute DiningDto diningDto, @PathVariable Long diningId){
         Long cid = RequestHolder.get().getCid();
         return diningService.modifyDiningRecord(cid,diningDto,diningId);
     }
