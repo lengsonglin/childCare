@@ -86,10 +86,9 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         }else if(Objects.equals(type, LoginAboutTypeEnum.MODIFY_PASSWORD.getType())){
             boolean flag = customerDao.modifyPasswordByTelphone(password,telPhone);
             if (!flag) {
-                throw new AppRuntimeException(CommonErrorEnum.TELPHONE_UNREGISTERED);
+                throw new AppRuntimeException(CommonErrorEnum.LOGIN_ERROR);
             }
         }
-
         redisTemplate.delete(RedisKey.getKey(RedisKey.CAPTCHA_KEY,telPhone));
     }
 
@@ -101,12 +100,12 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         Customer customer = customerDao.getByTelPhone(telPhone);
 
         if (Objects.isNull(customer)) {
-            return ApiResult.fail(CommonErrorEnum.TELPHONE_UNREGISTERED);
+            return ApiResult.fail(CommonErrorEnum.LOGIN_ERROR);
         }
         //密码验证
         String md5InputPassword = DigestUtils.md5DigestAsHex(password.getBytes());
         if(!md5InputPassword.equals(customer.getPassword())) {
-            return ApiResult.fail(CommonErrorEnum.TELPHONE_UNREGISTERED);
+            return ApiResult.fail(CommonErrorEnum.LOGIN_ERROR);
         }
         // 重新生成token
         String token = jwtUtils.createToken(customer.getId());

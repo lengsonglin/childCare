@@ -9,7 +9,7 @@ public enum CommonErrorEnum implements ErrorEnum {
 
     SYSTEM_ERROR(500, "系统出小差了，请稍后再试哦~~"),
     INVALID_TOKEN(401,"访问令牌不合法"),
-    TELPHONE_UNREGISTERED(403,"当前电话号码未注册"),
+    LOGIN_ERROR(403,"未注册或者密码错误"),
     UPLOAD_PICTURE_ERROR(1000,"上传图片失败"),
 
     SMS_ERROR(1001,"短信验证码获取失败"),

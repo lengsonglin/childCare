@@ -88,6 +88,7 @@ public class MinIOTemplate {
                 GetPresignedObjectUrlArgs.builder()
                         .method(Method.PUT)
                         .bucket(ossProperties.getBucket())
+
                         .object(absolutePath)
                         .expiry(60 * 60 * 24)
                         .build());
