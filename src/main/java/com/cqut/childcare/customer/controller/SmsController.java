@@ -30,6 +30,4 @@ public class SmsController {
         smsService.sendCaptcha(phone);
         return ApiResult.success();
     }
-
-
 }

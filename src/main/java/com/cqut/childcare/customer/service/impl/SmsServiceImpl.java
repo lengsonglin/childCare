@@ -54,7 +54,7 @@ public class SmsServiceImpl implements SmsService {
         String host = "https://dfsns.market.alicloudapi.com";
         String path = "/data/send_sms";
         String method = "POST";
-        String appcode = "7abf4df1f43a4e9783f1e34e3678bef7";
+        String appcode = "1a4de6f66e0b4f958c381f7f0c923495";
         Map<String, String> headers = new HashMap<String, String>();
         //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
         headers.put("Authorization", "APPCODE " + appcode);
