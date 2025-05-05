@@ -7,6 +7,11 @@ import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,6 +85,45 @@ public class OssService {
                         .expiry(1, TimeUnit.DAYS) // 有效期1天
                         .build()
         );
+    }
+
+    public ResponseEntity<InputStreamResource> getFile(String objectName, String bucketName) {
+        try {
+            // 检查对象是否存在（可选，避免直接 getObject 异常）
+            minioClient.statObject(StatObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .build());
+
+            // 获取文件流
+            InputStream stream = minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(objectName)
+                            .build()
+            );
+
+            // 获取文件元数据（用于设置 Content-Type 和 Content-Length）
+            StatObjectResponse stat = minioClient.statObject(StatObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .build());
+
+            // 构建响应
+            return ResponseEntity.ok()
+                    .contentType(MediaType.valueOf(stat.contentType()))
+                    .contentLength(stat.size())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + objectName + "\"")
+                    .body(new InputStreamResource(stream));
+        } catch (ErrorResponseException e) {
+            // 处理文件不存在的情况
+            if (e.errorResponse().code().equals("NoSuchKey")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     /**

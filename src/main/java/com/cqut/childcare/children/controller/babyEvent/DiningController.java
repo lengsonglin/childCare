@@ -1,8 +1,6 @@
 package com.cqut.childcare.children.controller.babyEvent;
 
-import com.cqut.childcare.children.domain.dto.babyEvent.CleanDto;
 import com.cqut.childcare.children.domain.dto.babyEvent.DiningDto;
-import com.cqut.childcare.children.domain.entity.Clean;
 import com.cqut.childcare.children.domain.entity.Dining;
 import com.cqut.childcare.children.service.babyEvent.DiningService;
 import com.cqut.childcare.common.domain.dto.PeriodTimeBaseReq;
@@ -38,10 +36,17 @@ public class DiningController {
     }
 
     @ApiOperation(value = "查看用餐记录")
-    @PostMapping(value = "/getDiningRecord")
+    @GetMapping(value = "/getDiningRecord")
     public ApiResult<List<Dining>> getDiningRecord(@RequestBody PeriodTimeBaseReq periodTimeBaseReq){
         Long cid = RequestHolder.get().getCid();
         return ApiResult.success(diningService.getDiningRecord(cid,periodTimeBaseReq));
+    }
+
+    @ApiOperation(value = "查看一条用餐记录")
+    @GetMapping(value = "/getDiningRecordOne/{recordId}")
+    public ApiResult<Dining> getDiningRecordOne(@PathVariable Long recordId){
+        Long cid = RequestHolder.get().getCid();
+        return ApiResult.success(diningService.getDiningRecordOne(cid,recordId));
     }
 
     @ApiOperation(value = "修改用餐记录")
@@ -50,12 +55,14 @@ public class DiningController {
         Long cid = RequestHolder.get().getCid();
         return diningService.modifyDiningRecord(cid,diningDto,diningId);
     }
-    @ApiOperation(value = "修改用餐记录")
+    @ApiOperation(value = "删除用餐记录")
     @DeleteMapping(value = "/deleteCleanRecord/{diningId}")
     public ApiResult deleteDiningRecord(@PathVariable Long diningId){
         Long cid = RequestHolder.get().getCid();
         return diningService.deleteDiningRecord(cid,diningId);
     }
+
+
 
 
 }

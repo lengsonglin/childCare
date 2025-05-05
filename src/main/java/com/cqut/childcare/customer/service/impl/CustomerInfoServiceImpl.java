@@ -28,6 +28,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -202,7 +203,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
     }
 
     @Override
-    public ApiResult<Map<String, String>> getCustomerAvatar(String filePath) {
+    public ApiResult getFileUrl(String filePath) {
         String avatarUrl = "";
         try {
             if(StringUtils.hasText(filePath)){
@@ -225,6 +226,12 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
             return ApiResult.success(customerBaseInfo);
         }
         return ApiResult.fail(RelationErrorEnum.INVALID_TELPHONE);
+    }
+
+    @Override
+    public MultipartFile getFile(String filePath) {
+
+        return null;
     }
 
 

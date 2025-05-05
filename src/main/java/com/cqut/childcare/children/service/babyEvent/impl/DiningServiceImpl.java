@@ -101,4 +101,9 @@ public class DiningServiceImpl implements DiningService {
         }
         return ApiResult.success();
     }
+
+    @Override
+    public Dining getDiningRecordOne(Long cid,Long recordId) {
+        return diningDao.getDiningRecordOne(cid,recordId);
+    }
 }

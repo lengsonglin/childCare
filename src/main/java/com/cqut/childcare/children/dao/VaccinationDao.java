@@ -30,7 +30,7 @@ public class VaccinationDao extends ServiceImpl<VaccinationMapper, Vaccination> 
 
         return lambdaQuery()
                 .eq(Vaccination::getBabyId, babyId)
-                .in(Vaccination::getCreateCustomer, relationCustomers)
+                .in(Vaccination::getCreateBy, relationCustomers)
                 .ge(beginDateTime != null, Vaccination::getTime, beginDateTime)
                 .le(endDateTime != null, Vaccination::getTime, endDateTime)
                 .list();

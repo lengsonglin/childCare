@@ -35,7 +35,7 @@ public class VaccinationServiceImpl implements VaccinationService {
         }
         Vaccination vaccination = new Vaccination();
         BeanUtils.copyProperties(vaccinationDto, vaccination);
-        vaccination.setCreateCustomer(cid);
+        vaccination.setCreateBy(cid);
         vaccinationDao.save(vaccination);
     }
 
@@ -49,14 +49,14 @@ public class VaccinationServiceImpl implements VaccinationService {
     public ApiResult modifyVaccinationRecord(Long cid, VaccinationDto vaccinationDto, Long vaccinationId) {
         Vaccination record = vaccinationDao.getById(vaccinationId);
         if (ObjectUtils.isNotEmpty(record)) {
-            if (!record.getCreateCustomer().equals(cid)) {
+            if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
             Vaccination temp = new Vaccination();
             BeanUtils.copyProperties(vaccinationDto, temp);
             temp.setBabyId(record.getBabyId());
             temp.setId(vaccinationId);
-            temp.setCreateCustomer(cid);
+            temp.setCreateBy(cid);
             vaccinationDao.updateById(temp);
         }
         return ApiResult.success();
@@ -66,7 +66,7 @@ public class VaccinationServiceImpl implements VaccinationService {
     public ApiResult deleteVaccinationRecord(Long cid, Long vaccinationId) {
         Vaccination record = vaccinationDao.getById(vaccinationId);
         if (ObjectUtils.isNotEmpty(record)) {
-            if (!record.getCreateCustomer().equals(cid)) {
+            if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
             }
             vaccinationDao.removeById(vaccinationId);

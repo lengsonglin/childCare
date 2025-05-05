@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -64,10 +65,16 @@ public class CustomerInfoController {
         CustomerInfoVo customerInfoVo = customerInfoService.modifyCustomerInfo(cid,modifyCInfoDto);
         return ApiResult.success(customerInfoVo);
     }
-    @ApiOperation("获取文件")
+    @ApiOperation("获取文件可访问url")
     @GetMapping("/getFile/{filePath}")
-    public ApiResult<Map<String,String>> getCustomerAvatar(@PathVariable String filePath){
-        return customerInfoService.getCustomerAvatar(filePath);
+    public ApiResult getFileUrl(@PathVariable String filePath){
+        return customerInfoService.getFileUrl(filePath);
+    }
+
+    @ApiOperation("获取文件对象")
+    @GetMapping("/getFile/{filePath}")
+    public MultipartFile getFile(@PathVariable String filePath){
+        return customerInfoService.getFile(filePath);
     }
 
 }

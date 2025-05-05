@@ -74,7 +74,6 @@ public class BabyEventController {
         result.put("teeth", teethService.getTeethRecord(cid, periodTimeBaseReq));
         result.put("vaccination", vaccinationService.getVaccinationRecord(cid, periodTimeBaseReq));
 
-
         return ApiResult.success(result);
     }
 }

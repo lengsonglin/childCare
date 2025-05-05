@@ -8,6 +8,7 @@ import com.cqut.childcare.customer.domain.dto.ModifyCInfoDto;
 import com.cqut.childcare.customer.domain.vo.CustomerBaseInfo;
 import com.cqut.childcare.customer.domain.vo.CustomerInfoVo;
 import com.cqut.childcare.customer.domain.vo.LoginVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -32,8 +33,9 @@ public interface CustomerInfoService {
 
     CustomerInfoVo modifyCustomerInfo(Long cid, ModifyCInfoDto modifyCInfoDto);
 
-    ApiResult<Map<String, String>> getCustomerAvatar(String filePath);
+    ApiResult getFileUrl(String filePath);
 
     ApiResult getCustomerInfoByTelPhone(String telPhone);
 
+    MultipartFile getFile(String filePath);
 }

@@ -38,4 +38,11 @@ public class DiningDao extends ServiceImpl<DiningMapper, Dining> {
                 .le(endDateTime != null, Dining::getBeginTime, endDateTime)
                 .list();
     }
+
+    public Dining getDiningRecordOne(Long cid, Long recordId) {
+        return lambdaQuery()
+                .eq(Dining::getCreateBy,cid)
+                .eq(Dining::getId,recordId)
+                .one();
+    }
 }
