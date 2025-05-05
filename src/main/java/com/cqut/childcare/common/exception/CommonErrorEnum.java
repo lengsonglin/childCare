@@ -15,7 +15,7 @@ public enum CommonErrorEnum implements ErrorEnum {
     SMS_ERROR(1001,"短信验证码获取失败"),
     INVALID_CAPTCHA(1002,"短信验证码无效"),
     CUSTOMER_PHONE_IS_REGISTER(1003,"手机号已注册"),
-    GET_FILE_URL_FAILED(1004,"获取文件失败"),
+    GET_FILE_FAILED(1004,"获取文件失败"),
 
     PARAM_VALID(2000, "参数校验失败{0}"),
     BUSINESS_ERROR(2001, "{0}");

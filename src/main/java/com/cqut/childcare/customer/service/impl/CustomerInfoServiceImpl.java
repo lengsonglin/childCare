@@ -23,7 +23,9 @@ import com.cqut.childcare.customer.service.CustomerInfoService;
 import com.cqut.childcare.minIo.service.OssService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -210,7 +212,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
                 avatarUrl  = ossService.findObjectAcrossBuckets(filePath);
             }
         } catch (Exception e) {
-            throw new AppRuntimeException(CommonErrorEnum.GET_FILE_URL_FAILED);
+            throw new AppRuntimeException(CommonErrorEnum.GET_FILE_FAILED);
         }
         Map<String,String> data = new HashMap<>();
         data.put("avatarUrl",avatarUrl);
@@ -229,10 +231,13 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
     }
 
     @Override
-    public MultipartFile getFile(String filePath) {
+    public ResponseEntity<InputStreamResource> getFile(String filePath)  {
 
-        return null;
+        try {
+            return ossService.getFileAcrossBuckets(filePath);
+        } catch (Exception e) {
+            throw new AppRuntimeException(CommonErrorEnum.GET_FILE_FAILED);
+        }
     }
-
 
 }

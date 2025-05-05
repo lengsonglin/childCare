@@ -14,6 +14,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,7 +75,7 @@ public class CustomerInfoController {
 
     @ApiOperation("获取文件对象")
     @GetMapping("/getFile/{filePath}")
-    public MultipartFile getFile(@PathVariable String filePath){
+    public ResponseEntity<InputStreamResource> getFile(@PathVariable String filePath){
         return customerInfoService.getFile(filePath);
     }
 

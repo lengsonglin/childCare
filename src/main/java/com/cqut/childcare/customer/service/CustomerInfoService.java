@@ -8,6 +8,8 @@ import com.cqut.childcare.customer.domain.dto.ModifyCInfoDto;
 import com.cqut.childcare.customer.domain.vo.CustomerBaseInfo;
 import com.cqut.childcare.customer.domain.vo.CustomerInfoVo;
 import com.cqut.childcare.customer.domain.vo.LoginVo;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
@@ -37,5 +39,5 @@ public interface CustomerInfoService {
 
     ApiResult getCustomerInfoByTelPhone(String telPhone);
 
-    MultipartFile getFile(String filePath);
+    ResponseEntity<InputStreamResource> getFile(String filePath);
 }

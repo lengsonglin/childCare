@@ -1,6 +1,8 @@
 package com.cqut.childcare.customer.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -23,6 +25,7 @@ import java.util.Date;
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String telPhone;
     private String nickName;

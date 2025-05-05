@@ -197,6 +197,48 @@ public class OssService {
             throw new RuntimeException("文件删除失败："+e.getMessage(),e);
         }
     }
+    public ResponseEntity<InputStreamResource> getFileAcrossBuckets(String targetObjectName) throws Exception {
+        // 1. 获取所有桶列表
+        List<Bucket> buckets = minioClient.listBuckets();
+
+        // 2. 遍历每个桶查找目标对象
+        for (Bucket bucket : buckets) {
+            String bucketName = bucket.name();
+            try {
+                // 检查对象是否存在
+                StatObjectResponse stat = minioClient.statObject(
+                        StatObjectArgs.builder()
+                                .bucket(bucketName)
+                                .object(targetObjectName)
+                                .build()
+                );
+
+                // 获取文件流
+                InputStream stream = minioClient.getObject(
+                        GetObjectArgs.builder()
+                                .bucket(bucketName)
+                                .object(targetObjectName)
+                                .build()
+                );
+
+                // 构建响应
+                return ResponseEntity.ok()
+                        .contentType(MediaType.valueOf(stat.contentType()))
+                        .contentLength(stat.size())
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + targetObjectName + "\"")
+                        .body(new InputStreamResource(stream));
+
+            } catch (ErrorResponseException e) {
+                if (!e.errorResponse().code().equals("NoSuchKey")) {
+                    throw e; // 非"文件不存在"异常继续抛出
+                }
+            }
+        }
+
+        // 3. 未找到文件
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(null);
+    }
 
 
 }

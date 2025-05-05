@@ -1,5 +1,7 @@
 package com.cqut.childcare.children.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,7 @@ import java.io.Serializable;
 @TableName(value = "t_pickup_info")
 public class PickUpInfo implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     @ApiModelProperty("电话")
     @NotBlank(message = "电话不能为空")
