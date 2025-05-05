@@ -205,7 +205,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
     }
 
     @Override
-    public ApiResult getFileUrl(String filePath) {
+    public ResponseEntity<String> getFileUrl(String filePath) {
         String avatarUrl = "";
         try {
             if(StringUtils.hasText(filePath)){
@@ -214,9 +214,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         } catch (Exception e) {
             throw new AppRuntimeException(CommonErrorEnum.GET_FILE_FAILED);
         }
-        Map<String,String> data = new HashMap<>();
-        data.put("avatarUrl",avatarUrl);
-        return ApiResult.success(data);
+        return ResponseEntity.ok(avatarUrl);
     }
 
     @Override
@@ -239,5 +237,4 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
             throw new AppRuntimeException(CommonErrorEnum.GET_FILE_FAILED);
         }
     }
-
 }

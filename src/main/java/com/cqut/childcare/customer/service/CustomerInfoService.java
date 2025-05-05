@@ -35,7 +35,7 @@ public interface CustomerInfoService {
 
     CustomerInfoVo modifyCustomerInfo(Long cid, ModifyCInfoDto modifyCInfoDto);
 
-    ApiResult getFileUrl(String filePath);
+    ResponseEntity<String> getFileUrl(String filePath);
 
     ApiResult getCustomerInfoByTelPhone(String telPhone);
 

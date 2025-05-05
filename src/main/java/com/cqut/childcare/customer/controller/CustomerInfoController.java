@@ -69,7 +69,7 @@ public class CustomerInfoController {
     }
     @ApiOperation("获取文件可访问url")
     @GetMapping("/getFile/{filePath}")
-    public ApiResult getFileUrl(@PathVariable String filePath){
+    public ResponseEntity<String> getFileUrl(@PathVariable String filePath){
         return customerInfoService.getFileUrl(filePath);
     }
 
