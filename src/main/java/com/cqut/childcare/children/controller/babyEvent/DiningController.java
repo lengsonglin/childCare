@@ -56,13 +56,10 @@ public class DiningController {
         return diningService.modifyDiningRecord(cid,diningDto,diningId);
     }
     @ApiOperation(value = "删除用餐记录")
-    @DeleteMapping(value = "/deleteCleanRecord/{diningId}")
+    @DeleteMapping(value = "/deleteDiningRecord/{diningId}")
     public ApiResult deleteDiningRecord(@PathVariable Long diningId){
         Long cid = RequestHolder.get().getCid();
         return diningService.deleteDiningRecord(cid,diningId);
     }
-
-
-
 
 }
