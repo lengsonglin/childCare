@@ -58,7 +58,6 @@ public class JobServiceImpl implements JobService  {
         JobDataMap jobDataMap = jobDetail.getJobDataMap();
         Map<String, Object> jobParams = qrtzJob.getJobParams();
         jobDataMap.putAll(jobParams);
-
         //构建Trigger
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withSchedule(CronScheduleBuilder.cronSchedule(qrtzJob.getCronExp()))

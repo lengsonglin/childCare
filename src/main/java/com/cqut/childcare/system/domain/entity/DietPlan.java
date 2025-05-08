@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -21,7 +22,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "t_diet_plan")
-public class DietPlan {
+public class DietPlan implements Serializable {
+    private static final long serialVersionUID = 1L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

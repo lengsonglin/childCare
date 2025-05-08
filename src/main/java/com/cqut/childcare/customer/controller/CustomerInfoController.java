@@ -68,13 +68,13 @@ public class CustomerInfoController {
         return ApiResult.success(customerInfoVo);
     }
     @ApiOperation("获取文件可访问url")
-    @GetMapping("/getFile/{filePath}")
+    @GetMapping("public/getFileUrl/{filePath}")
     public ResponseEntity<String> getFileUrl(@PathVariable String filePath){
         return customerInfoService.getFileUrl(filePath);
     }
 
     @ApiOperation("获取文件对象")
-    @GetMapping("/getFile/{filePath}")
+    @GetMapping("public/getFile/{filePath}")
     public ResponseEntity<InputStreamResource> getFile(@PathVariable String filePath){
         return customerInfoService.getFile(filePath);
     }
