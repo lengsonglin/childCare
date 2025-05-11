@@ -72,4 +72,9 @@ public class GrowthRecordServiceImpl implements GrowthRecordService {
         }
         return ApiResult.success();
     }
+
+    @Override
+    public GrowthRecord getGrowthRecordOne(Long recordId) {
+        return growthRecordDao.getGrowthRecordOne(recordId);
+    }
 } 

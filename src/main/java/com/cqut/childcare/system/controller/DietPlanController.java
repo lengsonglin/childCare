@@ -1,5 +1,6 @@
 package com.cqut.childcare.system.controller;
 
+import com.cqut.childcare.common.domain.dto.BasePeriodTimeReq2;
 import com.cqut.childcare.system.domain.dto.DietPlanDto;
 import com.cqut.childcare.system.domain.vo.DietPlanVo;
 import com.cqut.childcare.system.service.IDietPlanService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,13 +30,13 @@ public class DietPlanController {
     @Autowired
     private IDietPlanService dietPlanService;
 
-    @PostMapping("adDietPlan")
+    @PostMapping("addDietPlan")
     @ApiOperation("添加饮食计划")
     public ResponseEntity<Boolean> addDietPlan(@RequestBody DietPlanDto dietPlanDto) {
         return ResponseEntity.ok(dietPlanService.saveDietPlan(dietPlanDto));
     }
 
-    @PostMapping("/adDietPlan/batch")
+    @PostMapping("/addDietPlan/batch")
     @ApiOperation("批量添加饮食计划")
     public ResponseEntity<Boolean> addDietPlans(@RequestBody List<DietPlanDto> dietPlanDtos) {
         return ResponseEntity.ok(dietPlanService.saveDietPlans(dietPlanDtos));
@@ -47,27 +49,29 @@ public class DietPlanController {
         return ResponseEntity.ok(dietPlanService.removeByDateAndMealTime(parsedDate, mealTime));
     }
 
-    @DeleteMapping("/deleteDietPlan/foods")
-    @ApiOperation("删除指定日期和餐次的多个食物")
-    public ResponseEntity<Boolean> deleteDietPlanFoods(@RequestBody DietPlanDto dietPlanDto) {
-        return ResponseEntity.ok(dietPlanService.removeFoodsByDateAndMealTime(
-            dietPlanDto.getTimeDay(), 
-            dietPlanDto.getTimeName(), 
-            Arrays.asList(dietPlanDto.getIds())
-        ));
+    @PostMapping("/updateByDietPlanId")
+    @ApiOperation("根据id更新饮食计划")
+    public ResponseEntity updateByDietPlanId(@RequestBody DietPlanDto dietPlanDto) {
+        dietPlanService.updateByDietPlanId(dietPlanDto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/day")
     @ApiOperation("获取指定日期的饮食计划")
     public ResponseEntity<List<DietPlanVo>> getDietPlanByDate(String date) {
-        LocalDate parsedDate = LocalDate.parse(date); // 手动尝试转换
+        LocalDate parsedDate = LocalDate.parse(date);
         return ResponseEntity.ok(dietPlanService.getByDate(parsedDate));
     }
 
     @GetMapping("/week")
-    @ApiOperation("获取指定周的开始日期到结束日期的饮食计划")
-    public ResponseEntity<List<DietPlanVo>> getDietPlanByWeek(String startDate) {
-        LocalDate parsedDate = LocalDate.parse(startDate); // 手动尝试转换
+    @ApiOperation("获取指定日期这周的饮食计划")
+    public ResponseEntity<List<DietPlanVo>> getDietPlanByWeek(String inputDate) {
+        LocalDate parsedDate = LocalDate.parse(inputDate);
         return ResponseEntity.ok(dietPlanService.getByWeek(parsedDate));
+    }
+    @PostMapping("/getByPeriodTime")
+    @ApiOperation("获取开始日期到结束日期的饮食计划")
+    public ResponseEntity<List<DietPlanVo>> getDietPlanPeriodTime(@RequestBody BasePeriodTimeReq2 basePeriodTimeReq){
+        return ResponseEntity.ok(dietPlanService.getByPeriodTime(basePeriodTimeReq));
     }
 }

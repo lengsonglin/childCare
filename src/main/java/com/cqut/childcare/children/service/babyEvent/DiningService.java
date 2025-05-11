@@ -22,5 +22,5 @@ public interface DiningService {
 
     ApiResult deleteDiningRecord(Long cid, Long diningId);
 
-    Dining getDiningRecordOne(Long cid,Long recordId);
+    Dining getDiningRecordOne(Long recordId);
 }

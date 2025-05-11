@@ -73,4 +73,9 @@ public class VaccinationServiceImpl implements VaccinationService {
         }
         return ApiResult.success();
     }
+
+    @Override
+    public Vaccination getVaccinationRecordOne(Long recordId) {
+        return vaccinationDao.getById(recordId);
+    }
 } 

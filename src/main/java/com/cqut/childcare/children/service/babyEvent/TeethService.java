@@ -21,4 +21,6 @@ public interface TeethService {
     ApiResult modifyTeethRecord(Long cid, TeethDto teethDto, Long teethId);
 
     ApiResult deleteTeethRecord(Long cid, Long teethId);
-} 
+
+    Teeth getTeethRecordOne(Long teethId);
+}

@@ -103,7 +103,7 @@ public class DiningServiceImpl implements DiningService {
     }
 
     @Override
-    public Dining getDiningRecordOne(Long cid,Long recordId) {
-        return diningDao.getDiningRecordOne(cid,recordId);
+    public Dining getDiningRecordOne(Long recordId) {
+        return diningDao.getDiningRecordOne(recordId);
     }
 }

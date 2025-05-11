@@ -21,4 +21,6 @@ public interface GrowthRecordService {
     ApiResult modifyGrowthRecord(Long cid, GrowthRecordDto growthRecordDto, Long recordId);
 
     ApiResult deleteGrowthRecord(Long cid, Long recordId);
-} 
+
+    GrowthRecord getGrowthRecordOne(Long recordId);
+}

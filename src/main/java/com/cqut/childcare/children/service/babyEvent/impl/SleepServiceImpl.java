@@ -82,4 +82,9 @@ public class SleepServiceImpl implements SleepService {
         }
         return ApiResult.success();
     }
+
+    @Override
+    public Sleep getSleepRecordOne(Long recordId) {
+        return sleepDao.getById(recordId);
+    }
 } 

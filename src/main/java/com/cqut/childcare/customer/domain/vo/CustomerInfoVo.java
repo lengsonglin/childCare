@@ -28,7 +28,7 @@ public class CustomerInfoVo {
     @ApiModelProperty("用户性别")
     private String gender;
 
-    @ApiModelProperty("用户性别")
+    @ApiModelProperty("用户年龄")
     private int age;
 
     @ApiModelProperty("用户头像")

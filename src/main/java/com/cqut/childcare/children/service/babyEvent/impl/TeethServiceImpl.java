@@ -72,4 +72,9 @@ public class TeethServiceImpl implements TeethService {
         }
         return ApiResult.success();
     }
+
+    @Override
+    public Teeth getTeethRecordOne(Long teethId) {
+        return teethDao.getTeethRecordOne(teethId);
+    }
 } 

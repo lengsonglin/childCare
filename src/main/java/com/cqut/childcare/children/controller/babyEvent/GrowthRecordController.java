@@ -56,4 +56,11 @@ public class GrowthRecordController {
         Long cid = RequestHolder.get().getCid();
         return growthRecordService.deleteGrowthRecord(cid, recordId);
     }
+
+    @ApiOperation(value = "根据id查询成长记录")
+    @GetMapping(value = "/getGrowthRecordOne/{recordId}")
+    public ApiResult<GrowthRecord> getGrowthRecordOne(@PathVariable Long recordId) {
+        Long cid = RequestHolder.get().getCid();
+        return ApiResult.success(growthRecordService.getGrowthRecordOne(recordId));
+    }
 }

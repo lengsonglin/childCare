@@ -35,4 +35,10 @@ public class DevelopmentCheckRecordDao extends ServiceImpl<DevelopmentCheckRecor
                 .le(endDateTime != null, DevelopmentCheckRecord::getTime, endDateTime)
                 .list();
     }
-} 
+
+    public DevelopmentCheckRecord getDevelopmentCheckRecordOne(Long recordId) {
+        return lambdaQuery()
+                .eq(DevelopmentCheckRecord::getId,recordId)
+                .one();
+    }
+}

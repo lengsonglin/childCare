@@ -39,9 +39,8 @@ public class DiningDao extends ServiceImpl<DiningMapper, Dining> {
                 .list();
     }
 
-    public Dining getDiningRecordOne(Long cid, Long recordId) {
+    public Dining getDiningRecordOne(Long recordId) {
         return lambdaQuery()
-                .eq(Dining::getCreateBy,cid)
                 .eq(Dining::getId,recordId)
                 .one();
     }

@@ -21,4 +21,6 @@ public interface SickService {
     ApiResult modifySickRecord(Long cid, SickDto sickDto, Long sickId);
 
     ApiResult deleteSickRecord(Long cid, Long sickId);
-} 
+
+    Sick getSickRecordOne(Long recordId);
+}

@@ -19,7 +19,7 @@ import javax.validation.Valid;
  */
 @Api(value = "系统设置相关接口", tags = {"系统设置相关接口"})
 @RestController
-@RequestMapping("api/system/setting")
+@RequestMapping("/api/system/setting")
 public class SystemSettingController {
     @Autowired
     private SystemSettingService systemSettingService;

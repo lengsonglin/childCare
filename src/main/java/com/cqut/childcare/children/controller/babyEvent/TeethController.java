@@ -56,4 +56,11 @@ public class TeethController {
         Long cid = RequestHolder.get().getCid();
         return teethService.deleteTeethRecord(cid, teethId);
     }
+
+    @ApiOperation(value = "根据id查询长牙记录")
+    @GetMapping(value = "/getTeethRecordOne/{teethId}")
+    public ApiResult<Teeth> getTeethRecordOne(@PathVariable Long teethId) {
+        Long cid = RequestHolder.get().getCid();
+        return ApiResult.success(teethService.getTeethRecordOne(teethId));
+    }
 } 

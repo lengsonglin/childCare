@@ -21,4 +21,6 @@ public interface DevelopmentCheckRecordService {
     ApiResult modifyDevelopmentCheckRecord(Long cid, DevelopmentCheckRecordDto developmentCheckRecordDto, Long recordId);
 
     ApiResult deleteDevelopmentCheckRecord(Long cid, Long recordId);
-} 
+
+    DevelopmentCheckRecord getDevelopmentCheckRecordOne(Long recordId);
+}

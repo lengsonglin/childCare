@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(tags = "定时任务相关接口")
-@RequestMapping("/system/jobs")
+@RequestMapping("api/system/jobs")
 @Validated
 public class JobController {
     @Autowired
@@ -72,7 +72,7 @@ public class JobController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     @ApiOperation("删除指定定时任务")
     public ResponseEntity<?> deleteJob(@PathVariable Long id) {
         QrtzJob qrtzJob = jobService.getById(id);
@@ -92,7 +92,7 @@ public class JobController {
         return ResponseEntity.ok(jobService.getJobs(request));
     }
 
-    @PatchMapping("/{id}/execute")
+    @PatchMapping("/execute/{id}")
     @ApiOperation("立即执行一次当前任务")
     public ResponseEntity<?> executeJob(@PathVariable Long id){
         QrtzJob qrtzJob = jobService.getById(id);

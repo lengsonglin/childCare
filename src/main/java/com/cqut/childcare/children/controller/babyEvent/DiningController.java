@@ -42,11 +42,11 @@ public class DiningController {
         return ApiResult.success(diningService.getDiningRecord(cid,periodTimeBaseReq));
     }
 
-    @ApiOperation(value = "查看一条用餐记录")
+    @ApiOperation(value = "根据id获取用餐记录")
     @GetMapping(value = "/getDiningRecordOne/{recordId}")
     public ApiResult<Dining> getDiningRecordOne(@PathVariable Long recordId){
         Long cid = RequestHolder.get().getCid();
-        return ApiResult.success(diningService.getDiningRecordOne(cid,recordId));
+        return ApiResult.success(diningService.getDiningRecordOne(recordId));
     }
 
     @ApiOperation(value = "修改用餐记录")

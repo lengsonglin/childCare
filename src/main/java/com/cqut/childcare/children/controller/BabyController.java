@@ -1,8 +1,10 @@
 package com.cqut.childcare.children.controller;
 
 import com.cqut.childcare.children.domain.dto.AddBabyDto;
+import com.cqut.childcare.children.domain.dto.BabyDto;
 import com.cqut.childcare.children.domain.dto.CreateBabyDto;
 import com.cqut.childcare.children.domain.entity.Baby;
+import com.cqut.childcare.children.domain.vo.BabyDetailVo;
 import com.cqut.childcare.children.domain.vo.BabyVo;
 import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.domain.vo.ApiResult;
@@ -36,6 +38,16 @@ public class BabyController {
         return ApiResult.success();
     }
 
+    @ApiOperation(value = "修改宝宝信息")
+    @PostMapping(value = "/modifyBabyInfo")
+    public ApiResult modifyBabyInfo(@Valid @ModelAttribute BabyDto babyDto){
+        Long cid = RequestHolder.get().getCid();
+        babyService.modifyBabyInfo(babyDto);
+        return ApiResult.success();
+    }
+
+
+
     @ApiOperation(value = "托育员添加宝宝")
     @PostMapping(value = "/childWorker/addBaby")
     public ApiResult addBaby(@Valid @RequestBody AddBabyDto addBabyDto){
@@ -58,5 +70,16 @@ public class BabyController {
         List<BabyVo> data = babyService.getRelatedBaby(cid);
         return ApiResult.success(data);
     }
+    @ApiOperation(value = "根据id获取宝宝详细信息")
+    @GetMapping(value = "/BabyInfo/{babyId}")
+    public ApiResult<BabyDetailVo> getBabyDetailInfo(@PathVariable Long babyId){
+        Long cid = RequestHolder.get().getCid();
+        BabyDetailVo data = babyService.getBabyDetailInfo(babyId);
+        return ApiResult.success(data);
+    }
+
+
+
+
 
 }

@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
  * @Version 1.0
  */
 @RestController
-@RequestMapping("/api/system/development-check")
+@RequestMapping("/api/system/developmentCheck")
 @Api(tags = "发育检查接口")
 public class DevelopmentCheckController {
 

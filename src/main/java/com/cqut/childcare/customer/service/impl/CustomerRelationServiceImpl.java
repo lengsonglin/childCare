@@ -67,7 +67,13 @@ public class CustomerRelationServiceImpl implements CustomerRelationService {
         if(ObjectUtils.isEmpty(customerBabyRelation)){
             throw new AppRuntimeException(BabyEventEnum.PERMISSION_ERROR);
         }
+
         List<Long> relations = new ArrayList<>();
+        //如果是托育员，就只能查看自己记录的事件
+        if(customerBabyRelation.getRelationship()== RelationshipTypeEnum.CHILDCARE_WORKER.getType()){
+            relations.add(cid);
+            return relations;
+        }
         if (customerBabyRelation.getRelationship()== RelationshipTypeEnum.MAIN_FAMILY.getType()) {
             List<CustomerRelation> customerRelations = customerRelationDao.getRelationByMainId(cid);
             relations = customerRelations.stream().map(CustomerRelation::getSubId).collect(Collectors.toList());

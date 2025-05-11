@@ -21,4 +21,6 @@ public interface SleepService {
     ApiResult modifySleepRecord(Long cid, SleepDto sleepDto, Long sleepId);
 
     ApiResult deleteSleepRecord(Long cid, Long sleepId);
-} 
+
+    Sleep getSleepRecordOne(Long recordId);
+}

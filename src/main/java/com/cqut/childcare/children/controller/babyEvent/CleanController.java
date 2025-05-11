@@ -42,7 +42,7 @@ public class CleanController {
         return ApiResult.success(cleanService.getCleanRecord(cid,periodTimeBaseReq));
     }
 
-    @ApiOperation(value = "修改清洁记录")
+    @ApiOperation(value = "根据id修改清洁记录")
     @PostMapping(value = "/modifyCleanRecord/{cleanId}")
     public ApiResult modifyCleanRecord(@Valid @RequestBody CleanDto cleanDto,@PathVariable Long cleanId){
         Long cid = RequestHolder.get().getCid();

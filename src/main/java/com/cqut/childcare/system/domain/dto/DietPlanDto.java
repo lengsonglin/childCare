@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,9 +20,9 @@ import java.util.List;
 @NoArgsConstructor
 public class DietPlanDto {
 
-
+    private Long id;
     @ApiModelProperty("具体哪一天")
-    @JsonFormat(pattern = "")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate timeDay;
 
     @ApiModelProperty("哪个具体时段名(如早餐，午餐)")
@@ -29,5 +30,7 @@ public class DietPlanDto {
 
     @ApiModelProperty("食物id")
     private Long[] ids;
+    @ApiModelProperty("备注")
+    private String remark;
 
 }

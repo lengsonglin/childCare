@@ -1,13 +1,20 @@
 package com.cqut.childcare.system.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cqut.childcare.common.domain.dto.PageBaseReq;
+import com.cqut.childcare.common.domain.vo.PageBaseResp;
 import com.cqut.childcare.system.domain.entity.Food;
+import com.cqut.childcare.system.domain.entity.Vaccine;
 import com.cqut.childcare.system.service.IFoodService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -50,7 +57,15 @@ public class FoodController {
 
     @GetMapping("/list")
     @ApiOperation("获取食物列表")
-    public ResponseEntity<List<Food>> getFoodList() {
+    public ResponseEntity<PageBaseResp<Food>> getFoodList(@Valid PageBaseReq request) {
+        LambdaQueryWrapper<Food> queryWrapper = new LambdaQueryWrapper<>();
+        Page<Food> page = foodService.page(request.plusPage(), queryWrapper);
+        return ResponseEntity.ok(PageBaseResp.init(page, page.getRecords()));
+    }
+
+    @GetMapping("/all")
+    @ApiOperation("获取全部食物")
+    public ResponseEntity<List<Food>> getAll() {
         return ResponseEntity.ok(foodService.list());
     }
 }

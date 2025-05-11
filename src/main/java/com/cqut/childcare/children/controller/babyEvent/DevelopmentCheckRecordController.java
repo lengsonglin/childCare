@@ -56,4 +56,11 @@ public class DevelopmentCheckRecordController {
         Long cid = RequestHolder.get().getCid();
         return developmentCheckRecordService.deleteDevelopmentCheckRecord(cid, recordId);
     }
+
+    @ApiOperation(value = "根据id查询发展检核记录")
+    @GetMapping(value = "/getDevelopmentCheckRecordOne/{recordId}")
+    public ApiResult<DevelopmentCheckRecord> getDevelopmentCheckRecordOne(@PathVariable Long recordId) {
+        Long cid = RequestHolder.get().getCid();
+        return ApiResult.success(developmentCheckRecordService.getDevelopmentCheckRecordOne(recordId));
+    }
 } 

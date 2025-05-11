@@ -35,4 +35,17 @@ public class GrowthRecordDao extends ServiceImpl<GrowthRecordMapper, GrowthRecor
                 .le(endDateTime != null, GrowthRecord::getTime, endDateTime)
                 .list();
     }
-} 
+
+    public GrowthRecord getGrowthRecordOne(Long recordId) {
+        return lambdaQuery()
+                .eq(GrowthRecord::getId,recordId)
+                .one();
+    }
+
+    public GrowthRecord getRecentRecordByBabyId(Long babyId) {
+        return lambdaQuery()
+                .eq(GrowthRecord::getBabyId,babyId)
+                .orderByDesc(GrowthRecord::getTime)
+                .one();
+    }
+}

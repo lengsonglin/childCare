@@ -4,6 +4,7 @@ package com.cqut.childcare.customer.service.impl;
 import com.cqut.childcare.common.constant.RedisKey;
 import com.cqut.childcare.common.exception.AppRuntimeException;
 import com.cqut.childcare.common.exception.CommonErrorEnum;
+import com.cqut.childcare.common.service.SystemSettingLoader;
 import com.cqut.childcare.common.utils.HttpUtils;
 import com.cqut.childcare.customer.service.SmsService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +34,6 @@ public class SmsServiceImpl implements SmsService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    private static final Long captchaTimeout = 5L;
-
     private static final TimeUnit timeUnit = TimeUnit.MINUTES;
 
     @Override
@@ -45,7 +44,7 @@ public class SmsServiceImpl implements SmsService {
         }
         // 生成验证码
         String validateCaptcha = RandomStringUtils.randomNumeric(4);
-        redisTemplate.opsForValue().set(RedisKey.getKey(RedisKey.CAPTCHA_KEY,phone), validateCaptcha, captchaTimeout, timeUnit);
+        redisTemplate.opsForValue().set(RedisKey.getKey(RedisKey.CAPTCHA_KEY,phone), validateCaptcha,SystemSettingLoader.getSystemSetting().getShortMsgTime(), timeUnit);
         sendSms(phone, validateCaptcha);
     }
 

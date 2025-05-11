@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -18,7 +19,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class UserInfoDto {
     @ApiModelProperty("用户id")
-    @NotBlank(message = "id不能为空")
+    @NotNull(message = "id不能为空")
     private Long id;
 
     @ApiModelProperty("账号")

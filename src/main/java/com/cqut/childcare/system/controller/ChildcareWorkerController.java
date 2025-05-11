@@ -20,14 +20,15 @@ import javax.validation.Valid;
  * @Version 1.0
  */
 @Api(tags = "托育人员接口")
-@RestController("api/system/childcareWorker")
+@RestController
+@RequestMapping("/api/system/childcareWorker")
 public class ChildcareWorkerController {
 
     @Autowired
     private ChildcareWorkerService childcareWorkerService;
     @GetMapping("/getWorkerInfo")
-    @ApiOperation("获取托育人鱼信息(可根据真实姓名查询)")
-    public ResponseEntity<PageBaseResp<CustomerInfoVo>> getAllChildcareWorker(@Valid PageBaseReq request, @RequestParam(required = false) String realName){
+    @ApiOperation("获取托育人员信息(可根据真实姓名查询)")
+    public ResponseEntity<PageBaseResp<CustomerInfoVo>> getAllChildcareWorker(@Valid PageBaseReq request,@RequestParam(required = false) String realName){
         return childcareWorkerService.getChildcareWorkerPage(request.plusPage(),realName);
     }
 

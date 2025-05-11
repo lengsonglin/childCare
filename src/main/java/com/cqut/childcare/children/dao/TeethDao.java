@@ -35,4 +35,10 @@ public class TeethDao extends ServiceImpl<TeethMapper, Teeth> {
                 .le(endDateTime != null, Teeth::getTime, endDateTime)
                 .list();
     }
-} 
+
+    public Teeth getTeethRecordOne(Long teethId) {
+        return lambdaQuery()
+                .eq(Teeth::getId,teethId)
+                .one();
+    }
+}

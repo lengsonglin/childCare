@@ -43,6 +43,13 @@ public class SleepController {
         return ApiResult.success(sleepService.getSleepRecord(cid, periodTimeBaseReq));
     }
 
+    @ApiOperation(value = "根据id查看睡眠记录")
+    @GetMapping(value = "/getSleepRecord/{recordId}")
+    public ApiResult<Sleep> getSleepRecordOne(@PathVariable Long recordId) {
+        Long cid = RequestHolder.get().getCid();
+        return ApiResult.success(sleepService.getSleepRecordOne(recordId));
+    }
+
     @ApiOperation(value = "修改睡眠记录")
     @PostMapping(value = "/modifySleepRecord/{sleepId}")
     public ApiResult modifySleepRecord(@Valid @RequestBody SleepDto sleepDto, @PathVariable Long sleepId) {

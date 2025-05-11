@@ -72,4 +72,9 @@ public class DevelopmentCheckRecordServiceImpl implements DevelopmentCheckRecord
         }
         return ApiResult.success();
     }
+
+    @Override
+    public DevelopmentCheckRecord getDevelopmentCheckRecordOne( Long recordId) {
+        return developmentCheckRecordDao.getDevelopmentCheckRecordOne(recordId);
+    }
 } 

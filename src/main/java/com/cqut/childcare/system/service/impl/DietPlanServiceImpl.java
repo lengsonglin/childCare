@@ -1,7 +1,9 @@
 package com.cqut.childcare.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cqut.childcare.common.domain.dto.BasePeriodTimeReq2;
 import com.cqut.childcare.system.domain.dto.DietPlanDto;
 import com.cqut.childcare.system.domain.entity.DietPlan;
 import com.cqut.childcare.system.domain.entity.DietPlanFood;
@@ -11,12 +13,16 @@ import com.cqut.childcare.system.mapper.DietPlanMapper;
 import com.cqut.childcare.system.mapper.DietPlanFoodMapper;
 import com.cqut.childcare.system.mapper.FoodMapper;
 import com.cqut.childcare.system.service.IDietPlanService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,6 +43,7 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
         DietPlan dietPlan = new DietPlan();
         dietPlan.setTimeDay(dietPlanDto.getTimeDay());
         dietPlan.setTimeName(dietPlanDto.getTimeName());
+        dietPlan.setRemark(dietPlanDto.getRemark());
         boolean saved = save(dietPlan);
         
         if (saved && dietPlanDto.getIds() != null && dietPlanDto.getIds().length > 0) {
@@ -91,35 +98,43 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
 
     @Override
     @Transactional
-    public boolean removeFoodsByDateAndMealTime(LocalDate date, String mealTime, List<Long> foodIds) {
-        // 1. 查询符合条件的饮食计划
+    public void updateByDietPlanId(DietPlanDto dietPlanDto) {
+        // 1. 查询饮食计划
         LambdaQueryWrapper<DietPlan> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(DietPlan::getTimeDay, date)
-               .eq(DietPlan::getTimeName, mealTime);
-        List<DietPlan> dietPlans = list(wrapper);
-        
-        if (dietPlans.isEmpty()) {
-            return true;
+        wrapper.eq(DietPlan::getId, dietPlanDto.getId());
+        DietPlan dietPlan = getOne(wrapper);
+        updateById(DietPlan.builder()
+                .id(dietPlanDto.getId())
+                .timeDay(dietPlanDto.getTimeDay())
+                .timeName(dietPlanDto.getTimeName())
+                .remark(dietPlanDto.getRemark())
+                .build()
+
+        );
+        if (ObjectUtils.isEmpty(dietPlan)) {
+            return;
         }
-        
-        // 2. 删除关联的食物记录
-        List<Long> dietPlanIds = dietPlans.stream()
-                .map(DietPlan::getId)
-                .collect(Collectors.toList());
+
+        // 2. 更新关联的食物记录
         LambdaQueryWrapper<DietPlanFood> foodWrapper = new LambdaQueryWrapper<>();
-        foodWrapper.in(DietPlanFood::getDietPlanId, dietPlanIds)
-                  .in(DietPlanFood::getFoodId, foodIds);
-        return dietPlanFoodMapper.delete(foodWrapper) > 0;
+        foodWrapper.eq(DietPlanFood::getDietPlanId, dietPlan.getId());
+        dietPlanFoodMapper.delete(foodWrapper);
+        Long[] ids = dietPlanDto.getIds();
+        List<DietPlanFood> data = Arrays.stream(ids).map( foodId ->
+                DietPlanFood.builder()
+                        .dietPlanId(dietPlanDto.getId())
+                        .foodId(foodId).build())
+                .collect(Collectors.toList());
+        dietPlanFoodMapper.insertBatch(data);
     }
 
     @Override
     public List<DietPlanVo> getByDate(LocalDate date) {
-        // 1. 查询指定日期的饮食计划
+        // 1. 查询指定日期饮食计划
         LambdaQueryWrapper<DietPlan> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(DietPlan::getTimeDay, date)
                .orderByAsc(DietPlan::getTimeName);
         List<DietPlan> dietPlans = list(wrapper);
-        
         if (dietPlans.isEmpty()) {
             return new ArrayList<>();
         }
@@ -155,6 +170,7 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
                     DietPlanVo dietPlanVo = new DietPlanVo();
                     dietPlanVo.setTimeDay(dietPlan.getTimeDay());
                     dietPlanVo.setTimeName(dietPlan.getTimeName());
+                    dietPlanVo.setRemark(dietPlan.getRemark());
                     dietPlanVo.setFoods(dietPlanFoodMap.getOrDefault(dietPlan.getId(), new ArrayList<>()));
                     return dietPlanVo;
                 })
@@ -162,19 +178,28 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
     }
 
     @Override
-    public List<DietPlanVo> getByWeek(LocalDate startDate) {
-        LocalDate endDate = startDate.plusDays(6);
-        // 1. 查询指定周内的饮食计划
+    public List<DietPlanVo> getByWeek(LocalDate inputDate) {
+        LocalDate beginDate = inputDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endDate = inputDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        return getByPeriodTime(beginDate,endDate);
+    }
+
+    @Override
+    public List<DietPlanVo> getByPeriodTime(BasePeriodTimeReq2 basePeriodTimeReq) {
+        return getByPeriodTime(basePeriodTimeReq.getBeginDate(),basePeriodTimeReq.getEndDate());
+    }
+
+    public List<DietPlanVo> getByPeriodTime(LocalDate beginDate,LocalDate endDate){
         LambdaQueryWrapper<DietPlan> wrapper = new LambdaQueryWrapper<>();
-        wrapper.between(DietPlan::getTimeDay, startDate, endDate)
-               .orderByAsc(DietPlan::getTimeDay)
-               .orderByAsc(DietPlan::getTimeName);
+        wrapper.between(DietPlan::getTimeDay, beginDate, endDate)
+                .orderByAsc(DietPlan::getTimeDay)
+                .orderByAsc(DietPlan::getTimeName);
         List<DietPlan> dietPlans = list(wrapper);
-        
+
         if (dietPlans.isEmpty()) {
             return new ArrayList<>();
         }
-        
+
         // 2. 查询关联的食物
         List<Long> dietPlanIds = dietPlans.stream()
                 .map(DietPlan::getId)
@@ -182,7 +207,7 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
         LambdaQueryWrapper<DietPlanFood> foodWrapper = new LambdaQueryWrapper<>();
         foodWrapper.in(DietPlanFood::getDietPlanId, dietPlanIds);
         List<DietPlanFood> dietPlanFoods = dietPlanFoodMapper.selectList(foodWrapper);
-        
+
         // 3. 查询食物详情
         List<Long> foodIds = dietPlanFoods.stream()
                 .map(DietPlanFood::getFoodId)
@@ -190,7 +215,7 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
                 .collect(Collectors.toList());
         Map<Long, Food> foodMap = foodMapper.selectBatchIds(foodIds).stream()
                 .collect(Collectors.toMap(Food::getId, food -> food));
-        
+
         // 4. 组装数据
         Map<Long, List<Food>> dietPlanFoodMap = dietPlanFoods.stream()
                 .collect(Collectors.groupingBy(
@@ -200,15 +225,18 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
                                 Collectors.toList()
                         )
                 ));
-        
+
         return dietPlans.stream()
                 .map(dietPlan -> {
                     DietPlanVo dietPlanVo = new DietPlanVo();
+                    dietPlanVo.setId(dietPlan.getId());
                     dietPlanVo.setTimeDay(dietPlan.getTimeDay());
                     dietPlanVo.setTimeName(dietPlan.getTimeName());
+                    dietPlanVo.setRemark(dietPlan.getRemark());
                     dietPlanVo.setFoods(dietPlanFoodMap.getOrDefault(dietPlan.getId(), new ArrayList<>()));
                     return dietPlanVo;
                 })
                 .collect(Collectors.toList());
+
     }
 } 

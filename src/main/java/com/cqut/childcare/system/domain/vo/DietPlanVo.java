@@ -17,6 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class DietPlanVo {
+    private Long id;
     @ApiModelProperty("具体哪一天")
     private LocalDate timeDay;
 
@@ -25,4 +26,7 @@ public class DietPlanVo {
 
     @ApiModelProperty("包含的食物列表")
     private List<Food> foods;
+
+    @ApiModelProperty("备注")
+    private String Remark;
 }

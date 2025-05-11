@@ -84,4 +84,9 @@ public class SickServiceImpl implements SickService {
         }
         return ApiResult.success();
     }
+
+    @Override
+    public Sick getSickRecordOne(Long recordId) {
+        return sickDao.getById(recordId);
+    }
 } 

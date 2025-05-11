@@ -43,6 +43,13 @@ public class VaccinationController {
         return ApiResult.success(vaccinationService.getVaccinationRecord(cid, periodTimeBaseReq));
     }
 
+    @ApiOperation(value = "根据id查看疫苗接种记录")
+    @GetMapping(value = "/getVaccinationRecord/{recordId}")
+    public ApiResult<Vaccination> getVaccinationRecordOne(@PathVariable Long recordId) {
+        Long cid = RequestHolder.get().getCid();
+        return ApiResult.success(vaccinationService.getVaccinationRecordOne(recordId));
+    }
+
     @ApiOperation(value = "修改疫苗接种记录")
     @PostMapping(value = "/modifyVaccinationRecord/{vaccinationId}")
     public ApiResult modifyVaccinationRecord(@Valid @RequestBody VaccinationDto vaccinationDto, @PathVariable Long vaccinationId) {

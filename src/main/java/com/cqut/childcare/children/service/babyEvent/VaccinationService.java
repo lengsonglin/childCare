@@ -21,4 +21,6 @@ public interface VaccinationService {
     ApiResult modifyVaccinationRecord(Long cid, VaccinationDto vaccinationDto, Long vaccinationId);
 
     ApiResult deleteVaccinationRecord(Long cid, Long vaccinationId);
+
+    Vaccination getVaccinationRecordOne(Long recordId);
 } 
