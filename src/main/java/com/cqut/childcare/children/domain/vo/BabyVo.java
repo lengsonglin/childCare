@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @Description
  * @Author Faiz
@@ -23,6 +25,8 @@ public class BabyVo {
     private String gender;
 
     private String age;
+
+    private Date birthday;
 
     private String introduce;
 

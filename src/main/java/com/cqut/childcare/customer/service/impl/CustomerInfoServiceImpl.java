@@ -216,7 +216,6 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         }
         return ResponseEntity.ok(avatarUrl);
     }
-
     @Override
     public ApiResult getCustomerInfoByTelPhone(String telPhone) {
         Customer customer = customerDao.getCustomerInfoByTelPhone(telPhone);

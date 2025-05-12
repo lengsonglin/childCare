@@ -119,6 +119,7 @@ public class BabyServiceImpl implements BabyService {
                         .id(baby.getId())
                         .name(baby.getName())
                         .gender(baby.getGender())
+                        .birthday(baby.getBirthday())
                         .age(calculateAge(baby.getBirthday())) // 调用年龄计算
                         .introduce(baby.getIntroduce())
                         .avatar(baby.getAvatar())
