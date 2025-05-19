@@ -37,6 +37,9 @@ public class DiningDto {
     private String type;
     @ApiModelProperty("记录照片")
     private MultipartFile photo;
+
+    @ApiModelProperty("照片名称")
+    private String photoName;
     @ApiModelProperty("备注")
     private String remark;
 }

@@ -11,6 +11,7 @@ import com.cqut.childcare.common.domain.dto.PeriodTimeBaseReq;
 import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
 import com.cqut.childcare.common.exception.BabyEventEnum;
+import com.cqut.childcare.common.exception.CommonErrorEnum;
 import com.cqut.childcare.customer.service.CustomerRelationService;
 import com.cqut.childcare.minIo.service.OssService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -74,18 +75,28 @@ public class DiningServiceImpl implements DiningService {
             }
             Dining temp = new Dining();
             BeanUtils.copyProperties(diningDto, temp);
-            temp.setBabyId(record.getBabyId());
             temp.setId(diningId);
             temp.setPhotoUrl(record.getPhotoUrl());
             //照片是否更新
-            if(ObjectUtils.isNotEmpty(diningDto.getPhoto())){
-                String url = ossService.uploadFile(diningDto.getPhoto(), MinioBucketConstant.BABY_DINING_BUCKET);
-                if(StringUtils.isNotBlank(record.getPhotoUrl())){
-                    ossService.removeFile(record.getPhotoUrl(),MinioBucketConstant.BABY_DINING_BUCKET);
+            if(StringUtils.isNotBlank(diningDto.getPhotoName())){
+                //不更新
+                if(!diningDto.getPhotoName().equals(record.getPhotoUrl())){
+                    return ApiResult.fail(CommonErrorEnum.SYSTEM_ERROR);
                 }
-                temp.setPhotoUrl(url);
+            }
+            else{
+                //更新
+                if(ObjectUtils.isNotEmpty(diningDto.getPhoto())){
+                    String url = ossService.uploadFile(diningDto.getPhoto(), MinioBucketConstant.BABY_DINING_BUCKET);
+                    temp.setPhotoUrl(url);
+                }
             }
             diningDao.updateById(temp);
+            if(StringUtils.isNotBlank(record.getPhotoUrl())){
+                if(!temp.getPhotoUrl().equals(record.getPhotoUrl())){
+                    ossService.removeFile(record.getPhotoUrl(),MinioBucketConstant.BABY_DINING_BUCKET);
+                }
+            }
         }
         return ApiResult.success();
     }

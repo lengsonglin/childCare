@@ -21,6 +21,7 @@ import com.cqut.childcare.customer.domain.vo.CustomerInfoVo;
 import com.cqut.childcare.customer.domain.vo.LoginVo;
 import com.cqut.childcare.customer.service.CustomerInfoService;
 import com.cqut.childcare.minIo.service.OssService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -184,23 +185,28 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
 
     @Override
     public CustomerInfoVo modifyCustomerInfo(Long cid, ModifyCInfoDto modifyCInfoDto) {
-        String avatarUrl = "";
-          //判断头像是否为空
-        if(Objects.nonNull(modifyCInfoDto.getAvatarFile())){
-            avatarUrl = ossService.uploadFile(modifyCInfoDto.getAvatarFile(), MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
-        }
         Customer customer = new Customer();
         BeanUtils.copyProperties(modifyCInfoDto,customer);
-        if(StringUtils.hasText(avatarUrl)){
-            customer.setAvatar(avatarUrl);
+        if(!StringUtils.hasText(modifyCInfoDto.getAvatarFileName())){
+            if(ObjectUtils.isNotEmpty(modifyCInfoDto.getAvatarFile())){
+                String avatarUrl = ossService.uploadFile(modifyCInfoDto.getAvatarFile(), MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
+                customer.setAvatar(avatarUrl);
+            }
+        }else{
+            customer.setAvatar(modifyCInfoDto.getAvatarFileName());
         }
         customer.setId(cid);
+        Customer temp = customerDao.getByCid(cid);
         customerDao.modifyCustomerInfo(customer);
         //删除redis 缓存
         redisTemplate.delete(RedisKey.getKey(RedisKey.CUSTOMER_INFO,cid));
-        Customer temp = customerDao.getByCid(cid);
         CustomerInfoVo customerInfoVo = new CustomerInfoVo();
         BeanUtils.copyProperties(temp,customerInfoVo);
+        if(StringUtils.hasText(temp.getAvatar())){
+            if(!temp.getAvatar().equals(customer.getAvatar())){
+                ossService.removeFile(temp.getAvatar(),MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
+            }
+        }
         return customerInfoVo;
     }
 

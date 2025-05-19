@@ -25,7 +25,7 @@ public class BabyDao extends ServiceImpl<BabyMapper, Baby> {
 
     }
 
-    public void updateBabyInfo(Baby temp) {
+    public void  updateBabyInfo(Baby temp) {
         lambdaUpdate()
                 .set(ObjectUtils.isNotEmpty(temp.getBirthday()),Baby::getBirthday,temp.getBirthday())
                 .set(StringUtils.hasText(temp.getName()),Baby::getName,temp.getName())

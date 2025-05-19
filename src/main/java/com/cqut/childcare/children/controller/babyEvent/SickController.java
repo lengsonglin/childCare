@@ -42,7 +42,7 @@ public class SickController {
         Long cid = RequestHolder.get().getCid();
         return ApiResult.success(sickService.getSickRecord(cid, periodTimeBaseReq));
     }
-    @ApiOperation(value = "查看生病记录")
+    @ApiOperation(value = "根据ID查看生病记录")
     @GetMapping(value = "/getSickRecord/{recordId}")
     public ApiResult<Sick> getSickRecordOne(@PathVariable Long recordId) {
         Long cid = RequestHolder.get().getCid();

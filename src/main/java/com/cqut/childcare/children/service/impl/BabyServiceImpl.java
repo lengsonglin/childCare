@@ -15,8 +15,10 @@ import com.cqut.childcare.children.domain.vo.BabyVo;
 import com.cqut.childcare.children.mapper.BabyMapper;
 import com.cqut.childcare.children.service.BabyService;
 import com.cqut.childcare.common.constant.MinioBucketConstant;
+import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
 import com.cqut.childcare.common.exception.BabyEventEnum;
+import com.cqut.childcare.common.exception.CommonErrorEnum;
 import com.cqut.childcare.minIo.service.OssService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -153,14 +155,25 @@ public class BabyServiceImpl implements BabyService {
         if(ObjectUtils.isNotEmpty(baby)) {
             Baby temp = new Baby();
             BeanUtils.copyProperties(babyDto,temp);
-            if(ObjectUtils.isNotEmpty(file)){
-                String s = ossService.uploadFile(file, MinioBucketConstant.BABY_AVATAR_BUCKET);
-                temp.setAvatar(s);
+            temp.setAvatar(baby.getAvatar());
+            if(StringUtils.isNotBlank(babyDto.getAvatarFileName())){
+                //不更新
+                if(!babyDto.getAvatarFileName().equals(baby.getAvatar())){
+                    throw new AppRuntimeException(CommonErrorEnum.SYSTEM_ERROR);
+                }
+            }
+            else {
+                if(ObjectUtils.isNotEmpty(file)){
+                    String s = ossService.uploadFile(file, MinioBucketConstant.BABY_AVATAR_BUCKET);
+                    temp.setAvatar(s);
+                }
             }
             babyDao.updateBabyInfo(temp);
-            if(StringUtils.isNotBlank(temp.getAvatar())){
+            if(StringUtils.isNotBlank(baby.getAvatar())){
                 //删除以前的头像
-                ossService.removeFile(baby.getAvatar(),MinioBucketConstant.BABY_AVATAR_BUCKET);
+                if(!temp.getAvatar().equals(baby.getAvatar())){
+                    ossService.removeFile(baby.getAvatar(),MinioBucketConstant.BABY_AVATAR_BUCKET);
+                }
             }
         }
     }

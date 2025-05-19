@@ -32,4 +32,6 @@ public class BabyDto {
 
     @FileSize(max = 50 * 1024 * 1024, message = "头像不能超过50MB")
     private MultipartFile avatarFile; // 接收文件对象
+
+    private String avatarFileName;
 }

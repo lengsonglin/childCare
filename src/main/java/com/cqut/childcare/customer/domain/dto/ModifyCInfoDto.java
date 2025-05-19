@@ -30,6 +30,8 @@ public class ModifyCInfoDto {
     @ApiModelProperty("头像")
     @FileSize(max = 10 * 1024 * 1024, message = "头像不能超过10MB")
     private MultipartFile avatarFile; // 接收文件对象
+    @ApiModelProperty("头像路径名")
+    private String avatarFileName;
     @ApiModelProperty("真实姓名")
     private String realName;
 
