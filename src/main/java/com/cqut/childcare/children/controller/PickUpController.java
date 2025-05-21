@@ -25,7 +25,8 @@ public class PickUpController {
     @ApiOperation(value = "指定宝宝的代接人")
     @PostMapping(value = "/pickUpInfo")
     public ApiResult pickUpInfo(@RequestBody PickUpInfo pickUpInfo){
-        pickUpInfoService.addOrUpdate(pickUpInfo);
+        Long cid = RequestHolder.get().getCid();
+        pickUpInfoService.addOrUpdate(cid,pickUpInfo);
         return ApiResult.success();
     }
 

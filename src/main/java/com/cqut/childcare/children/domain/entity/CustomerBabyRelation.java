@@ -29,7 +29,9 @@ public class CustomerBabyRelation implements Serializable {
     private Long babyId;
 
     private Long customerId;
-
+    /**
+     * 关系类型（0=主家长,1=保育员,2=其他家长）
+     */
     private Integer relationship;
 
     private String remark;

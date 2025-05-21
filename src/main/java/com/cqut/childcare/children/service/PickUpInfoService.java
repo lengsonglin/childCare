@@ -9,7 +9,7 @@ import com.cqut.childcare.children.domain.entity.PickUpInfo;
  * @Version 1.0
  */
 public interface PickUpInfoService {
-    void addOrUpdate(PickUpInfo pickUpInfo);
+    void addOrUpdate(Long cid,PickUpInfo pickUpInfo);
 
     PickUpInfo getPickUpInfo(Long babyId);
 }
