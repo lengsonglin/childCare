@@ -11,10 +11,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -39,8 +41,19 @@ public class FoodController {
 
     @DeleteMapping("/{id}")
     @ApiOperation("删除食物")
-    public ResponseEntity<Boolean> deleteFood(@PathVariable Long id) {
-        return ResponseEntity.ok(foodService.removeById(id));
+    public ResponseEntity deleteFood(@PathVariable Long id) {
+        try {
+            foodService.removeById(id);
+        } catch (DataIntegrityViolationException e) {
+            Throwable rootCause = e.getRootCause();
+            if (rootCause instanceof SQLIntegrityConstraintViolationException ) {
+               return ResponseEntity.badRequest().body("饮食计划中包含这个食物，不能直接删除！");
+            }
+            return ResponseEntity.badRequest().body("删除失败");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("删除失败");
+        }
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping

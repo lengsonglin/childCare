@@ -12,6 +12,7 @@ import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
 import com.cqut.childcare.common.exception.BabyEventEnum;
 import com.cqut.childcare.common.exception.CommonErrorEnum;
+import com.cqut.childcare.common.utils.FileUtils;
 import com.cqut.childcare.customer.service.CustomerRelationService;
 import com.cqut.childcare.minIo.service.OssService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -53,7 +54,7 @@ public class DiningServiceImpl implements DiningService {
         Dining dining = new Dining();
         BeanUtils.copyProperties(diningDto, dining);
         dining.setCreateBy(cid);
-        if(ObjectUtils.isNotEmpty(diningDto.getPhoto())){
+        if(!FileUtils.checkBlankFile(diningDto.getPhoto())){
             String url = ossService.uploadFile(diningDto.getPhoto(), MinioBucketConstant.BABY_DINING_BUCKET);
             dining.setPhotoUrl(url);
         }
@@ -86,7 +87,7 @@ public class DiningServiceImpl implements DiningService {
             }
             else{
                 //更新
-                if(ObjectUtils.isNotEmpty(diningDto.getPhoto())){
+                if(!FileUtils.checkBlankFile(diningDto.getPhoto())){
                     String url = ossService.uploadFile(diningDto.getPhoto(), MinioBucketConstant.BABY_DINING_BUCKET);
                     temp.setPhotoUrl(url);
                 }

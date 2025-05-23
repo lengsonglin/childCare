@@ -46,8 +46,8 @@ public class DevelopmentCheckRecordServiceImpl implements DevelopmentCheckRecord
     }
 
     @Override
-    public ApiResult modifyDevelopmentCheckRecord(Long cid, DevelopmentCheckRecordDto dto, Long recordId) {
-        DevelopmentCheckRecord record = developmentCheckRecordDao.getById(recordId);
+    public ApiResult modifyDevelopmentCheckRecord(Long cid, DevelopmentCheckRecordDto dto) {
+        DevelopmentCheckRecord record = developmentCheckRecordDao.getByOther(dto);
         if (ObjectUtils.isNotEmpty(record)) {
             if (!record.getCreateBy().equals(cid)) {
                 return ApiResult.fail(BabyEventEnum.PERMISSION_EXCEEDED);
@@ -55,7 +55,7 @@ public class DevelopmentCheckRecordServiceImpl implements DevelopmentCheckRecord
             DevelopmentCheckRecord temp = new DevelopmentCheckRecord();
             BeanUtils.copyProperties(dto, temp);
             temp.setBabyId(record.getBabyId());
-            temp.setId(recordId);
+            temp.setId(record.getId());
             developmentCheckRecordDao.updateById(temp);
         }
         return ApiResult.success();

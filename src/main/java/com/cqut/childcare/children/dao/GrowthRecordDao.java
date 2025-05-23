@@ -46,6 +46,7 @@ public class GrowthRecordDao extends ServiceImpl<GrowthRecordMapper, GrowthRecor
         return lambdaQuery()
                 .eq(GrowthRecord::getBabyId,babyId)
                 .orderByDesc(GrowthRecord::getTime)
+                .last("limit 1")
                 .one();
     }
 }

@@ -189,6 +189,12 @@ public class DietPlanServiceImpl extends ServiceImpl<DietPlanMapper, DietPlan> i
         return getByPeriodTime(basePeriodTimeReq.getBeginDate(),basePeriodTimeReq.getEndDate());
     }
 
+    @Override
+    public void deleteByDietPlanId(Long id) {
+        removeById(id);
+        dietPlanFoodMapper.deleteById(id);
+    }
+
     public List<DietPlanVo> getByPeriodTime(LocalDate beginDate,LocalDate endDate){
         LambdaQueryWrapper<DietPlan> wrapper = new LambdaQueryWrapper<>();
         wrapper.between(DietPlan::getTimeDay, beginDate, endDate)

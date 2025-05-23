@@ -1,6 +1,7 @@
 package com.cqut.childcare.children.dao;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cqut.childcare.children.domain.dto.babyEvent.DevelopmentCheckRecordDto;
 import com.cqut.childcare.children.domain.entity.DevelopmentCheckRecord;
 import com.cqut.childcare.children.mapper.DevelopmentCheckRecordMapper;
 import com.cqut.childcare.common.domain.dto.PeriodTimeBaseReq;
@@ -39,6 +40,13 @@ public class DevelopmentCheckRecordDao extends ServiceImpl<DevelopmentCheckRecor
     public DevelopmentCheckRecord getDevelopmentCheckRecordOne(Long recordId) {
         return lambdaQuery()
                 .eq(DevelopmentCheckRecord::getId,recordId)
+                .one();
+    }
+
+    public DevelopmentCheckRecord getByOther(DevelopmentCheckRecordDto dto) {
+        return lambdaQuery()
+                .eq(DevelopmentCheckRecord::getBabyId,dto.getBabyId())
+                .eq(DevelopmentCheckRecord::getDevelopmentCheckId,dto.getDevelopmentCheckId())
                 .one();
     }
 }

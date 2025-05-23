@@ -56,6 +56,15 @@ public class DietPlanController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/delete/{id}")
+    @ApiOperation("根据id删除饮食计划")
+    public ResponseEntity deleteByDietPlanId(@PathVariable Long id) {
+        dietPlanService.deleteByDietPlanId(id);
+        return ResponseEntity.ok().build();
+    }
+
+
+
     @GetMapping("/day")
     @ApiOperation("获取指定日期的饮食计划")
     public ResponseEntity<List<DietPlanVo>> getDietPlanByDate(String date) {

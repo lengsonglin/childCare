@@ -40,4 +40,6 @@ public class GrowthRecord implements Serializable {
     private Date time;
 
     private Long createBy;
+
+    private String remark;
 } 

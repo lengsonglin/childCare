@@ -18,7 +18,7 @@ public interface DevelopmentCheckRecordService {
 
     List<DevelopmentCheckRecord> getDevelopmentCheckRecord(Long cid, PeriodTimeBaseReq periodTimeBaseReq);
 
-    ApiResult modifyDevelopmentCheckRecord(Long cid, DevelopmentCheckRecordDto developmentCheckRecordDto, Long recordId);
+    ApiResult modifyDevelopmentCheckRecord(Long cid, DevelopmentCheckRecordDto developmentCheckRecordDto);
 
     ApiResult deleteDevelopmentCheckRecord(Long cid, Long recordId);
 

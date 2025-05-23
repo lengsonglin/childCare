@@ -41,4 +41,6 @@ public interface IDietPlanService extends IService<DietPlan> {
     List<DietPlanVo> getByWeek(LocalDate startDate);
 
     List<DietPlanVo> getByPeriodTime(BasePeriodTimeReq2 basePeriodTimeReq);
-} 
+
+    void deleteByDietPlanId(Long id);
+}

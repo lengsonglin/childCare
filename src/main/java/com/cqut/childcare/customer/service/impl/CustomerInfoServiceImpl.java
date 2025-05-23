@@ -6,6 +6,7 @@ import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
 import com.cqut.childcare.common.exception.CommonErrorEnum;
 import com.cqut.childcare.common.exception.RelationErrorEnum;
+import com.cqut.childcare.common.utils.FileUtils;
 import com.cqut.childcare.common.utils.JsonUtils;
 import com.cqut.childcare.common.utils.JwtUtils;
 import com.cqut.childcare.common.utils.RedisUtils;
@@ -188,7 +189,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         Customer customer = new Customer();
         BeanUtils.copyProperties(modifyCInfoDto,customer);
         if(!StringUtils.hasText(modifyCInfoDto.getAvatarFileName())){
-            if(ObjectUtils.isNotEmpty(modifyCInfoDto.getAvatarFile())){
+            if(!FileUtils.checkBlankFile(modifyCInfoDto.getAvatarFile())){
                 String avatarUrl = ossService.uploadFile(modifyCInfoDto.getAvatarFile(), MinioBucketConstant.CUSTOMER_AVATAR_BUCKET);
                 customer.setAvatar(avatarUrl);
             }

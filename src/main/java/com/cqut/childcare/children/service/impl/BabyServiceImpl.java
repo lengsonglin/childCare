@@ -19,6 +19,7 @@ import com.cqut.childcare.common.domain.vo.ApiResult;
 import com.cqut.childcare.common.exception.AppRuntimeException;
 import com.cqut.childcare.common.exception.BabyEventEnum;
 import com.cqut.childcare.common.exception.CommonErrorEnum;
+import com.cqut.childcare.common.utils.FileUtils;
 import com.cqut.childcare.minIo.service.OssService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,7 +71,7 @@ public class BabyServiceImpl implements BabyService {
             Baby temp = new Baby();
             BeanUtils.copyProperties(babyCreateDto,temp);
             temp.setCreateTime(new Date());
-            if(ObjectUtils.isNotEmpty(file)) {
+            if(!FileUtils.checkBlankFile(file)) {
                 String s = ossService.uploadFile(file, MinioBucketConstant.BABY_AVATAR_BUCKET);
                 temp.setAvatar(s);
             }
@@ -163,7 +164,7 @@ public class BabyServiceImpl implements BabyService {
                 }
             }
             else {
-                if(ObjectUtils.isNotEmpty(file)){
+                if(!FileUtils.checkBlankFile(file)){
                     String s = ossService.uploadFile(file, MinioBucketConstant.BABY_AVATAR_BUCKET);
                     temp.setAvatar(s);
                 }

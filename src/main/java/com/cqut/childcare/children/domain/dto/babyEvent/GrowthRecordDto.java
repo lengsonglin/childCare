@@ -35,4 +35,6 @@ public class GrowthRecordDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "记录时间不能为空")
     private Date time;
+
+    private String remark;
 } 

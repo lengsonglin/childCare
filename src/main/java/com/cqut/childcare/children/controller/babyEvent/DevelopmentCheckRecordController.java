@@ -44,10 +44,10 @@ public class DevelopmentCheckRecordController {
     }
 
     @ApiOperation(value = "修改发展检核记录")
-    @PostMapping(value = "/modifyDevelopmentCheckRecord/{recordId}")
-    public ApiResult modifyDevelopmentCheckRecord(@Valid @RequestBody DevelopmentCheckRecordDto developmentCheckRecordDto, @PathVariable Long recordId) {
+    @PostMapping(value = "/modifyDevelopmentCheckRecord")
+    public ApiResult modifyDevelopmentCheckRecord(@Valid @RequestBody DevelopmentCheckRecordDto developmentCheckRecordDto) {
         Long cid = RequestHolder.get().getCid();
-        return developmentCheckRecordService.modifyDevelopmentCheckRecord(cid, developmentCheckRecordDto, recordId);
+        return developmentCheckRecordService.modifyDevelopmentCheckRecord(cid, developmentCheckRecordDto);
     }
 
     @ApiOperation(value = "删除发展检核记录")
