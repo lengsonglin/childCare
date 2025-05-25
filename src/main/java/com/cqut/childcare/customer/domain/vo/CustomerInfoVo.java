@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 public class CustomerInfoVo {
     @ApiModelProperty("用户id")
     private Long id;
-
     @ApiModelProperty("用户电话")
     private String telPhone;
     @ApiModelProperty("用户昵称")

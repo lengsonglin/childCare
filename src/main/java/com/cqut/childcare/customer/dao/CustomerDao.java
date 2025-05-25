@@ -1,6 +1,7 @@
 package com.cqut.childcare.customer.dao;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cqut.childcare.customer.domain.dto.AddFamilyDto;
 import com.cqut.childcare.customer.domain.entity.Customer;
 import com.cqut.childcare.customer.domain.enums.CustomerTypeEnum;
 import com.cqut.childcare.customer.mapper.CustomerMapper;
@@ -59,6 +60,19 @@ public class CustomerDao extends ServiceImpl<CustomerMapper, Customer> {
 
     public Customer getCustomerInfoByTelPhone(String telPhone) {
         return lambdaQuery().eq(StringUtils.isNotBlank(telPhone),Customer::getTelPhone,telPhone)
+                .one();
+    }
+
+    public List<Customer> getByCids(List<Long> cids) {
+        return lambdaQuery()
+                .in(Customer::getId,cids)
+                .list();
+    }
+
+    public Customer getByNameAndTelPhone(AddFamilyDto addFamilyDto) {
+        return lambdaQuery()
+                .eq(Customer::getTelPhone,addFamilyDto.getTelPhone())
+                .eq(Customer::getRealName,addFamilyDto.getRealName())
                 .one();
     }
 }

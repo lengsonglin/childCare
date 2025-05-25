@@ -29,7 +29,7 @@ public class PickUpInfo implements Serializable {
     private Long id;
     @ApiModelProperty("电话")
     @NotBlank(message = "电话不能为空")
-    private String Phone;
+    private String phone;
     @NotBlank(message = "宝宝id不能为空")
     @ApiModelProperty("宝宝Id")
     private Long babyId;

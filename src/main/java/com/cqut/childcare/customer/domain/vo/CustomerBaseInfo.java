@@ -20,6 +20,8 @@ import java.util.Date;
 public class CustomerBaseInfo {
     private Long id;
     private String nickName;
+    private String telPhone;
+    private String realName;
     private String gender;
     private int age;
     private String avatar;

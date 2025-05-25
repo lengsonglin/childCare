@@ -46,6 +46,9 @@ public class Customer implements Serializable {
     private String address;
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date registerTime;
+    /**
+     * 用户类型（family/childcareWorker）
+     */
     private String type;
 
 }

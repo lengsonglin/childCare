@@ -24,6 +24,7 @@ public class CustomerRelationDao extends ServiceImpl<CustomerRelationMapper, Cus
     public CustomerRelation getRelationBySubId(Long cid) {
         return lambdaQuery()
                 .eq(CustomerRelation::getSubId,cid)
+                .last("limit 1")
                 .one();
     }
 }

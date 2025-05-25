@@ -15,7 +15,7 @@ public enum BabyEventEnum implements ErrorEnum{
     PERMISSION_EXCEEDED(4000,"无法删除或更新其他家人添加的事件"),
     PERMISSION_ERROR(4001,"当前家长与当前孩子无亲属关系"),
     BABY_NOT_EXIST(4002,"宝宝不存在"),
-    PERIOD_TIME_OUT(4003,"时间间隔最多为7天"),
+    PERIOD_TIME_OUT(4003,"时间间隔最多为15天"),
     PERMISSION_OUT(4004,"当前家长不是当前孩子的主家长！"),
 
     ;
